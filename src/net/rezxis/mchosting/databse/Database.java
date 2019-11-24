@@ -13,6 +13,9 @@ public class Database {
 		}
 		props = new Props("database.propertis");
 		MySQLProvider.init();
+		Runtime.getRuntime().addShutdownHook(new Thread(()-> {
+			MySQLProvider.closeAllConnections();
+		} ));
 		System.out.println("Database was initialized.");
 	}
 	

@@ -10,6 +10,7 @@ import java.util.UUID;
 import com.google.gson.Gson;
 
 import net.rezxis.mchosting.databse.DBServer;
+import net.rezxis.mchosting.databse.DBShop;
 import net.rezxis.mchosting.databse.MySQLStorage;
 import net.rezxis.mchosting.databse.ServerStatus;
 
@@ -33,12 +34,16 @@ public class ServersTable extends MySQLStorage {
 		map.put("status", "text,");
 		map.put("world", "text,");
 		map.put("host", "int,");
-		map.put("motd", "text");
+		map.put("motd", "text,");
+		map.put("cmd","boolean,");
+		map.put("visible", "boolean,");
+		map.put("icon", "text,");
+		map.put("shop", "text");
 		createTable(map);
 	}
 	
 	public void insert(DBServer server) {
-        execute(new Insert(insertIntoTable() + " (displayName,owner,plugins,players,port,status,world,host,motd) VALUES (?,?,?,?,?,?,?,?,?)",
+        execute(new Insert(insertIntoTable() + " (displayName,owner,plugins,players,port,status,world,host,motd,cmd,visible,icon,shop) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 server.getDisplayName(),
                 server.getOwner().toString(),
                 gson.toJson(server.getPlugins()),
@@ -47,7 +52,11 @@ public class ServersTable extends MySQLStorage {
                 server.getStatus().name(),
                 server.getWorld(),
                 server.getHost(),
-                server.getMotd()) {
+                server.getMotd(),
+                server.getCmd(),
+                server.getVisible(),
+                server.getIcon(),
+                gson.toJson(server.getShop())) {
             @Override
             public void onInsert(List<Integer> integers) {
                 if (!integers.isEmpty())
@@ -62,7 +71,8 @@ public class ServersTable extends MySQLStorage {
 	
 	public boolean load(final DBServer server) {
         return (Boolean) executeQuery(new Query(selectFromTable("*") + " WHERE owner = ?", server.getOwner().toString()) {
-            @Override
+            @SuppressWarnings("unchecked")
+			@Override
             protected void onResult(ResultSet resultSet) {
                 try {
                     if (resultSet.next()) {
@@ -75,6 +85,10 @@ public class ServersTable extends MySQLStorage {
                         server.setWorld(resultSet.getString("world"));
                         server.setHost(resultSet.getInt("host"));
                         server.setMotd(resultSet.getString("motd"));
+                        server.setCmd(resultSet.getBoolean("cmd"));
+                        server.setVisible(resultSet.getBoolean("visible"));
+                        server.setIcon(resultSet.getString("icon"));
+                        server.setShop(gson.fromJson(resultSet.getString("shop"), DBShop.class));
                         setReturnValue(true);
                     }else setReturnValue(false);
                 } catch (SQLException e) {
@@ -86,7 +100,8 @@ public class ServersTable extends MySQLStorage {
 	
 	public DBServer getByPort(int port) {
 		return (DBServer) executeQuery(new Query(selectFromTable("*","port = ?"),port) {
-            @Override
+			@SuppressWarnings("unchecked")
+			@Override
             protected void onResult(ResultSet resultSet) {
                 try {
                     setReturnValue(null);
@@ -100,7 +115,11 @@ public class ServersTable extends MySQLStorage {
                         		ServerStatus.valueOf(resultSet.getString("status")),
                         		resultSet.getString("world"),
                         		resultSet.getInt("host"),
-                        		resultSet.getString("motd")));
+                        		resultSet.getString("motd"),
+                        		resultSet.getBoolean("cmd"),
+                        		resultSet.getBoolean("visible"),
+                        		resultSet.getString("icon"),
+                        		gson.fromJson(resultSet.getString("shop"), DBShop.class)));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -111,6 +130,7 @@ public class ServersTable extends MySQLStorage {
 	
 	public DBServer getByID(int id) {
 		return (DBServer) executeQuery(new Query(selectFromTable("*","id = ?"),id) {
+			@SuppressWarnings("unchecked")
             @Override
             protected void onResult(ResultSet resultSet) {
                 try {
@@ -125,7 +145,11 @@ public class ServersTable extends MySQLStorage {
                         		ServerStatus.valueOf(resultSet.getString("status")),
                         		resultSet.getString("world"),
                         		resultSet.getInt("host"),
-                        		resultSet.getString("motd")));
+                        		resultSet.getString("motd"),
+                        		resultSet.getBoolean("cmd"),
+                        		resultSet.getBoolean("visible"),
+                        		resultSet.getString("icon"),
+                        		gson.fromJson(resultSet.getString("shop"), DBShop.class)));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -136,6 +160,7 @@ public class ServersTable extends MySQLStorage {
 	
 	public DBServer get(final UUID uuid) {
         return (DBServer) executeQuery(new Query(selectFromTable("*","owner = ?"),uuid.toString()) {
+        	@SuppressWarnings("unchecked")
             @Override
             protected void onResult(ResultSet resultSet) {
                 try {
@@ -150,7 +175,11 @@ public class ServersTable extends MySQLStorage {
                         		ServerStatus.valueOf(resultSet.getString("status")),
                         		resultSet.getString("world"),
                         		resultSet.getInt("host"),
-                        		resultSet.getString("motd")));
+                        		resultSet.getString("motd"),
+                        		resultSet.getBoolean("cmd"),
+                        		resultSet.getBoolean("visible"),
+                        		resultSet.getString("icon"),
+                        		gson.fromJson(resultSet.getString("shop"), DBShop.class)));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -178,6 +207,7 @@ public class ServersTable extends MySQLStorage {
 	
 	public DBServer getServerByName(String name) {
 		return (DBServer) executeQuery(new Query(selectFromTable("*","displayname= ?"), name) {
+			@SuppressWarnings("unchecked")
             @Override
             protected void onResult(ResultSet resultSet) {
                 try {
@@ -192,7 +222,11 @@ public class ServersTable extends MySQLStorage {
                         		ServerStatus.valueOf(resultSet.getString("status")),
                         		resultSet.getString("world"),
                         		resultSet.getInt("host"),
-                        		resultSet.getString("motd")));
+                        		resultSet.getString("motd"),
+                        		resultSet.getBoolean("cmd"),
+                        		resultSet.getBoolean("visible"),
+                        		resultSet.getString("icon"),
+                        		gson.fromJson(resultSet.getString("shop"), DBShop.class)));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -219,7 +253,44 @@ public class ServersTable extends MySQLStorage {
                     			ServerStatus.valueOf(resultSet.getString("status")),
                     			resultSet.getString("world"),
                     			resultSet.getInt("host"),
-                    			resultSet.getString("motd")));
+                    			resultSet.getString("motd"),
+                    			resultSet.getBoolean("cmd"),
+                    			resultSet.getBoolean("visible"),
+                    			resultSet.getString("icon"),
+                    			gson.fromJson(resultSet.getString("shop"), DBShop.class)));
+                    }
+                    setReturnValue(servers);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<DBServer> getOnlineServersVisible() {
+		return (ArrayList<DBServer>) executeQuery(new Query(selectFromTable("*","status = ? AND visible = true"), ServerStatus.RUNNING.name()) {
+            @Override
+            protected void onResult(ResultSet resultSet) {
+                try {
+                    ArrayList<DBServer> servers = new ArrayList<>();
+                    while (resultSet.next())
+                    {
+                    	servers.add(
+                    			new DBServer(resultSet.getInt("id"),
+                    			resultSet.getString("displayName"),
+                    			UUID.fromString(resultSet.getString("owner")),
+                    			resultSet.getInt("port"),
+                    			gson.fromJson(resultSet.getString("plugins"), ArrayList.class),
+                    			resultSet.getInt("players"),
+                    			ServerStatus.RUNNING,
+                    			resultSet.getString("world"),
+                    			resultSet.getInt("host"),
+                    			resultSet.getString("motd"),
+                    			resultSet.getBoolean("cmd"),
+                    			resultSet.getBoolean("visible"),
+                    			resultSet.getString("icon"),
+                    			gson.fromJson(resultSet.getString("shop"), DBShop.class)));
                     }
                     setReturnValue(servers);
                 } catch (SQLException e) {
@@ -238,7 +309,8 @@ public class ServersTable extends MySQLStorage {
                     ArrayList<DBServer> servers = new ArrayList<>();
                     while (resultSet.next())
                     {
-                    	servers.add(new DBServer(resultSet.getInt("id"),
+                    	servers.add(
+                    			new DBServer(resultSet.getInt("id"),
                     			resultSet.getString("displayName"),
                     			UUID.fromString(resultSet.getString("owner")),
                     			resultSet.getInt("port"),
@@ -247,7 +319,11 @@ public class ServersTable extends MySQLStorage {
                     			ServerStatus.RUNNING,
                     			resultSet.getString("world"),
                     			resultSet.getInt("host"),
-                    			resultSet.getString("motd")));
+                    			resultSet.getString("motd"),
+                    			resultSet.getBoolean("cmd"),
+                    			resultSet.getBoolean("visible"),
+                    			resultSet.getString("icon"),
+                    			gson.fromJson(resultSet.getString("shop"), DBShop.class)));
                     }
                     setReturnValue(servers);
                 } catch (SQLException e) {
@@ -258,6 +334,9 @@ public class ServersTable extends MySQLStorage {
 	}
 	
 	public void update(DBServer server) {
-        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,owner = ?,plugins = ?,status = ?,world = ?,host = ?,motd = ? WHERE id = ?", server.getDisplayName(),server.getPlayers(), server.getPort(), server.getOwner().toString(), gson.toJson(server.getPlugins()),server.getStatus().name(), server.getWorld(), server.getHost(),server.getMotd(), server.getID());
+        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,owner = ?,plugins = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,shop = ? WHERE id = ?",
+        		server.getDisplayName(),server.getPlayers(), server.getPort(), server.getOwner().toString(),
+        		gson.toJson(server.getPlugins()),server.getStatus().name(), server.getWorld(), server.getHost(), 
+        		server.getMotd(), server.getCmd(), server.getVisible(), server.getIcon(), gson.toJson(server.getShop()), server.getID());
     }
 }

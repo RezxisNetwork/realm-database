@@ -17,9 +17,14 @@ public class DBServer {
 	private String world;
 	private int host;
 	private String motd;
+	private boolean cmd;
+	private boolean visible;
+	private String icon;
+	private DBShop shop;
 	
 	public DBServer(int id, String displayName, UUID owner, int port, ArrayList<String> plugins,
-			int players, ServerStatus status, String world, int host, String motd) {
+			int players, ServerStatus status, String world, int host, String motd,
+			boolean cmd, boolean visible, String icon, DBShop shop) {
 		this.id = id;
 		this.displayName = displayName;
 		this.owner = owner;
@@ -29,10 +34,46 @@ public class DBServer {
 		this.world = world;
 		this.host = host;
 		this.motd = motd;
+		this.cmd = cmd;
+		this.visible = visible;
+		this.icon = icon;
+		this.shop = shop;
+	}
+	
+	public DBShop getShop() {
+		return this.shop;
+	}
+	
+	public void setShop(DBShop shop) {
+		this.shop = shop;
 	}
 	
 	public int getID() {
 		return this.id;
+	}
+	
+	public String getIcon() {
+		return this.icon;
+	}
+	
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+	
+	public boolean getCmd() {
+		return this.cmd;
+	}
+	
+	public void setCmd(boolean cmd) {
+		this.cmd = cmd;
+	}
+	
+	public boolean getVisible() {
+		return this.visible;
+	}
+	
+	public void setVisible(boolean bool) {
+		this.visible = bool;
 	}
 	
 	public String getMotd() {
