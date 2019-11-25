@@ -1,20 +1,19 @@
 package net.rezxis.mchosting.databse.crates;
 
 import net.rezxis.mchosting.databse.DBCrate;
-import org.bukkit.Material;
 
 public enum CrateTypes {
 
-    UNKNOWN("unknown", Material.BARRIER, "Unknown"),
-    NORMAL("normal", Material.CHEST, "&fノーマル"),
-    RARE("rare", Material.STORAGE_MINECART, "&9レア"),
-    VOTE("vote", Material.POWERED_MINECART, "&e投票");
+    UNKNOWN("unknown", "BARRIER", "Unknown"),
+    NORMAL("normal", "CHEST", "&fノーマル"),
+    RARE("rare", "STORAGE_MINECART", "&9レア"),
+    VOTE("vote", "POWERED_MINECART", "&e投票");
 
     private final String name;
-    private final Material displayItem;
+    private final String displayItem;
     private final String lang;
 
-    private CrateTypes(String name, Material displayItem, String lang) {
+    private CrateTypes(String name, String displayItem, String lang) {
         this.name = name;
         this.displayItem = displayItem;
         this.lang = lang;
@@ -31,5 +30,5 @@ public enum CrateTypes {
 
     public String getTypeString() { return name; }
     public String getName() { return lang; }
-    public Material getDisplayItem() { return displayItem; }
+    public String getDisplayItem() { return displayItem; }
 }
