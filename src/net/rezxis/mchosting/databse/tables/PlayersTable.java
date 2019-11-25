@@ -26,8 +26,7 @@ public class PlayersTable extends MySQLStorage {
 		map.put("id", "INT PRIMARY KEY NOT NULL AUTO_INCREMENT,");
 		map.put("uuid", "text,");
 		map.put("rank", "text,");
-		map.put("coin", "INT,");
-		map.put("box", "text");
+		map.put("coin", "INT");
 		createTable(map);
 	}
 	
@@ -40,7 +39,6 @@ public class PlayersTable extends MySQLStorage {
                     	player.setID(resultSet.getInt("id"));
                     	player.setRank(Rank.valueOf(resultSet.getString("rank")));
                     	player.setCoin(resultSet.getInt("coin"));
-                    	player.setBoxes(gson.fromJson(resultSet.getString("box"), int[].class));
                         setReturnValue(true);
                     }else setReturnValue(false);
                 } catch (SQLException e) {
@@ -51,11 +49,10 @@ public class PlayersTable extends MySQLStorage {
     }
 	
 	public void insert(DBPlayer player) {
-        execute(new Insert(insertIntoTable() + " (uuid,rank,coin,box) VALUES (?,?,?,?)",
+        execute(new Insert(insertIntoTable() + " (uuid,rank,coin) VALUES (?,?,?)",
                 player.getUUID().toString(),
                 player.getRank().name(),
-                player.getCoin(),
-                gson.toJson(player.getBoxes())
+                player.getCoin()
         		) {
             @Override
             public void onInsert(List<Integer> integers) {
@@ -76,8 +73,7 @@ public class PlayersTable extends MySQLStorage {
                         setReturnValue(new DBPlayer(resultSet.getInt("id"),
                         		uuid,
                         		DBPlayer.Rank.valueOf(resultSet.getString("rank")),
-                        		resultSet.getInt("coin"),
-                        		gson.fromJson(resultSet.getString("box"), int[].class)));
+                        		resultSet.getInt("coin")));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -91,11 +87,10 @@ public class PlayersTable extends MySQLStorage {
 	}
 	
 	public void update(DBPlayer player) {
-        execute("UPDATE " + getTable() + " SET uuid = ?, rank = ?, coin = ?, box = ? WHERE id = ?",
+        execute("UPDATE " + getTable() + " SET uuid = ?, rank = ?, coin = ? WHERE id = ?",
         		player.getUUID().toString(),
         		player.getRank().name(),
         		player.getCoin(),
-        		gson.toJson(player.getBoxes()),
         		player.getID());
     }
 }

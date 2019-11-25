@@ -1,16 +1,18 @@
 package net.rezxis.mchosting.databse;
 
+import net.rezxis.mchosting.databse.crates.CrateTypes;
+
 public class DBCrate {
 
     private long id;
-    private String type;
+    private CrateTypes type;
 
-    public DBCrate(long id, String type) {
+    public DBCrate(long id, CrateTypes type) {
         this.id = id;
         this.type = type;
     }
 
     public long getId() { return id; }
 
-    public String getType() { return type; }
+    public CrateTypes getType() { return type; }
 }

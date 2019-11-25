@@ -3,6 +3,7 @@ package net.rezxis.mchosting.databse.tables;
 import com.google.gson.Gson;
 import net.rezxis.mchosting.databse.DBCrate;
 import net.rezxis.mchosting.databse.MySQLStorage;
+import net.rezxis.mchosting.databse.crates.CrateTypes;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,7 +37,7 @@ public class CrateTable extends MySQLStorage {
                     List<DBCrate> crates = new ArrayList<>();
                     while (resultSet.next()) {
                         crates.add(
-                          new DBCrate(resultSet.getLong("id"),resultSet.getString("type"))
+                          new DBCrate(resultSet.getLong("id"), CrateTypes.valueOf(resultSet.getString("type")))
                         );
                     }
                     setReturnValue(crates);
@@ -47,17 +48,17 @@ public class CrateTable extends MySQLStorage {
         });
     }
 
-    public void giveCrate(UUID player, String type) {
+    public void giveCrate(UUID player, CrateTypes type) {
         execute(new Insert(insertIntoTable() + " (`owner`,`crate_type`) VALUES (?,?)",
                 player.toString(),
-                type) {
+                type.name()) {
             @Override
             public void onInsert(List<Integer> keys) {
             }
         });
     }
 
-    public void giveManyCrates(UUID player, String type, int amount) {
+    public void giveManyCrates(UUID player, CrateTypes type, int amount) {
         for(int i = 0; i < amount;i++) {
             giveCrate(player, type);
         }

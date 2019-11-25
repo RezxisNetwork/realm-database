@@ -10,24 +10,13 @@ public class DBPlayer {
 	private UUID uuid;
 	private Rank rank;
 	private long rc;
-	private int[] boxes;
-	//[Normal,Rare,Vote]
 	
 	
-	public DBPlayer(int id, UUID uuid, Rank rank, long rc, int[] boxes) {
+	public DBPlayer(int id, UUID uuid, Rank rank, long rc) {
 		this.id = id;
 		this.uuid = uuid;
 		this.rank = rank;
 		this.rc = rc;
-		this.boxes = boxes;
-	}
-	
-	public int[] getBoxes() {
-		return this.boxes;
-	}
-	
-	public void setBoxes(int[] boxes) {
-		this.boxes = boxes;
 	}
 	
 	public int getID() {
