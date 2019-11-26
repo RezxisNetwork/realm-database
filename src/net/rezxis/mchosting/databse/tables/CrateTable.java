@@ -47,7 +47,7 @@ public class CrateTable extends MySQLStorage {
     }
 
     public void giveCrate(UUID player, CrateTypes type) {
-        execute(new Insert(insertIntoTable() + " (owner,crate_type) VALUES (?,?)",
+        execute(new Insert(insertIntoTable() + " (owner,type) VALUES (?,?)",
                 player.toString(),
                 type.name()) {
             @Override
