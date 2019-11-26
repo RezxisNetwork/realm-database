@@ -1,7 +1,5 @@
 package net.rezxis.mchosting.databse.crates;
 
-import net.rezxis.mchosting.databse.DBCrate;
-
 public enum CrateTypes {
 
     UNKNOWN("unknown", "BARRIER", "Unknown"),
@@ -19,14 +17,14 @@ public enum CrateTypes {
         this.lang = lang;
     }
 
-    public static CrateTypes getByCrate(DBCrate crate) {
+    /*public static CrateTypes getByCrate(DBCrate crate) {
         for(CrateTypes ct : values()) {
             if(ct.name.equals(crate.getType())) {
                 return ct;
             }
         }
         return CrateTypes.UNKNOWN;
-    }
+    }*/
 
     public String getTypeString() { return name; }
     public String getName() { return lang; }
