@@ -30,26 +30,24 @@ public class CrateTable extends MySQLStorage {
 
     @SuppressWarnings("unchecked")
     public List<DBCrate> getCrates(UUID player, int limit) {
-        return (List<DBCrate>) executeQuery(new Query(selectFromTable("`crate_type`,`id`", "`owner`="+player.toString()+" LIMIT "+limit)) {
-            @Override
+    	return (List<DBCrate>) executeQuery(new Query(selectFromTable("*") + " WHERE owner = ? LIMIT ?", player.toString(),limit) {
+			@Override
             protected void onResult(ResultSet resultSet) {
-                try{
-                    List<DBCrate> crates = new ArrayList<>();
+				List<DBCrate> crates = new ArrayList<>();
+                try {
                     while (resultSet.next()) {
-                        crates.add(
-                          new DBCrate(resultSet.getLong("id"), CrateTypes.valueOf(resultSet.getString("type")))
-                        );
+                    	crates.add(new DBCrate(resultSet.getInt("id"), CrateTypes.valueOf(resultSet.getString("type"))));
                     }
-                    setReturnValue(crates);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                setReturnValue(crates);
             }
         });
     }
 
     public void giveCrate(UUID player, CrateTypes type) {
-        execute(new Insert(insertIntoTable() + " (`owner`,`crate_type`) VALUES (?,?)",
+        execute(new Insert(insertIntoTable() + " (owner,crate_type) VALUES (?,?)",
                 player.toString(),
                 type.name()) {
             @Override
@@ -65,6 +63,6 @@ public class CrateTable extends MySQLStorage {
     }
 
     public void removeCrate(DBCrate crate) {
-        execute("DELETE FROM `crates` WHERE `id`=?", crate.getId());
+        execute("DELETE FROM rezxis_crates WHERE id=?", crate.getId());
     }
 }
