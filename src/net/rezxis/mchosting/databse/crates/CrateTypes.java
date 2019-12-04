@@ -3,9 +3,9 @@ package net.rezxis.mchosting.databse.crates;
 public enum CrateTypes {
 
     UNKNOWN("unknown", "BARRIER", "Unknown"),
-    NORMAL("normal", "CHEST", "&fノーマル"),
-    RARE("rare", "STORAGE_MINECART", "&9レア"),
-    VOTE("vote", "POWERED_MINECART", "&e投票");
+    NORMAL("normal", "CHEST", "§fノーマル"),
+    RARE("rare", "STORAGE_MINECART", "§9レア"),
+    VOTE("vote", "POWERED_MINECART", "§e投票");
 
     private final String name;
     private final String displayItem;
