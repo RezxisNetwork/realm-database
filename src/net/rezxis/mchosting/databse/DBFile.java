@@ -59,6 +59,6 @@ public class DBFile {
 	}
 	
 	public enum Type {
-		WORLD,CONFIG,UNKNOWN;
+		WORLD,CONFIG,UNKNOWN,PLUGIN;
 	}
 }

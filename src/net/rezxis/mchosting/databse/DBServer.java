@@ -21,10 +21,11 @@ public class DBServer {
 	private boolean visible;
 	private String icon;
 	private DBShop shop;
+	private int vote;
 	
 	public DBServer(int id, String displayName, UUID owner, int port, ArrayList<String> plugins,
 			int players, ServerStatus status, String world, int host, String motd,
-			boolean cmd, boolean visible, String icon, DBShop shop) {
+			boolean cmd, boolean visible, String icon, DBShop shop,int vote) {
 		this.id = id;
 		this.displayName = displayName;
 		this.owner = owner;
@@ -38,10 +39,23 @@ public class DBServer {
 		this.visible = visible;
 		this.icon = icon;
 		this.shop = shop;
+		this.vote = vote;
 	}
 	
 	public DBShop getShop() {
 		return this.shop;
+	}
+	
+	public int getVote() {
+		return this.vote;
+	}
+	
+	public void setVote(int i) {
+		this.vote = i;
+	}
+	
+	public void addVote(int i) {
+		this.vote+= i;
 	}
 	
 	public void setShop(DBShop shop) {

@@ -29,7 +29,9 @@ public class PlayersTable extends MySQLStorage {
 		map.put("rank", "text,");
 		map.put("coin", "INT,");
 		map.put("ofb", "boolean,");
-		map.put("rexp", "datetime");
+		map.put("rexp", "datetime,");
+		map.put("nvote", "datetime,");
+		map.put("online", "boolean");
 		createTable(map);
 	}
 	
@@ -44,6 +46,8 @@ public class PlayersTable extends MySQLStorage {
                     	player.setCoin(resultSet.getInt("coin"));
                     	player.setOfflineBoot(resultSet.getBoolean("ofb"));
                     	player.setRankExpire(resultSet.getDate("rexp"));
+                    	player.setNextVote(resultSet.getDate("nvote"));
+                    	player.setOnline(resultSet.getBoolean("online"));
                         setReturnValue(true);
                     }else setReturnValue(false);
                 } catch (SQLException e) {
@@ -54,12 +58,14 @@ public class PlayersTable extends MySQLStorage {
     }
 	
 	public void insert(DBPlayer player) {
-        execute(new Insert(insertIntoTable() + " (uuid,rank,coin,ofb,rexp) VALUES (?,?,?,?,?)",
+        execute(new Insert(insertIntoTable() + " (uuid,rank,coin,ofb,rexp,nvote,online) VALUES (?,?,?,?,?,?,?)",
                 player.getUUID().toString(),
                 player.getRank().name(),
                 player.getCoin(),
                 player.getOfflineBoot(),
-                player.getRankExpire()
+                player.getRankExpire(),
+                player.getNextVote(),
+                player.getOnline()
         		) {
             @Override
             public void onInsert(List<Integer> integers) {
@@ -82,7 +88,9 @@ public class PlayersTable extends MySQLStorage {
                         		DBPlayer.Rank.valueOf(resultSet.getString("rank")),
                         		resultSet.getInt("coin"),
                         		resultSet.getBoolean("ofb"),
-                        		resultSet.getDate("rexp")));
+                        		resultSet.getDate("rexp"),
+                        		resultSet.getDate("nvote"),
+                        		resultSet.getBoolean("online")));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -99,14 +107,16 @@ public class PlayersTable extends MySQLStorage {
                 try {
                 	ArrayList<DBPlayer> arr = new ArrayList<DBPlayer>();
                     setReturnValue(arr);
-                    if(resultSet.next())
+                    while (resultSet.next())
                     {
                     	arr.add(new DBPlayer(resultSet.getInt("id"),
                         		UUID.fromString(resultSet.getString("uuid")),
                         		DBPlayer.Rank.valueOf(resultSet.getString("rank")),
                         		resultSet.getInt("coin"),
                         		true,
-                        		resultSet.getDate("rexp")));
+                        		resultSet.getDate("rexp"),
+                        		resultSet.getDate("nvote"),
+                        		resultSet.getBoolean("online")));
                     }
                     setReturnValue(arr);
                 } catch (SQLException e) {
@@ -122,12 +132,14 @@ public class PlayersTable extends MySQLStorage {
 	}
 	
 	public void update(DBPlayer player) {
-        execute("UPDATE " + getTable() + " SET uuid = ?, rank = ?, coin = ?,ofb = ?,rexp = ? WHERE id = ?",
+        execute("UPDATE " + getTable() + " SET uuid = ?, rank = ?, coin = ?,ofb = ?,rexp = ?,nvote = ?,online = ? WHERE id = ?",
         		player.getUUID().toString(),
         		player.getRank().name(),
         		player.getCoin(),
         		player.getOfflineBoot(),
         		player.getRankExpire(),
+        		player.getNextVote(),
+        		player.getOnline(),
         		player.getID());
     }
 }

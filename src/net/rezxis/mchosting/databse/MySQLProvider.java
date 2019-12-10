@@ -29,8 +29,8 @@ public class MySQLProvider {
 	    boneCPConfig.setUsername(username);
 	    boneCPConfig.setPassword(password);
 	    boneCPConfig.setDefaultAutoCommit(true);
-	    boneCPConfig.setMinConnectionsPerPartition(5);
-	    boneCPConfig.setMaxConnectionsPerPartition(2);
+	    boneCPConfig.setMinConnectionsPerPartition(1);
+	    boneCPConfig.setMaxConnectionsPerPartition(5);
 	    boneCPConfig.setPartitionCount(1);
 	    try {
 	    	instance.connectionPools.put(configName, new BoneCP(boneCPConfig));

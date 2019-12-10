@@ -38,12 +38,13 @@ public class ServersTable extends MySQLStorage {
 		map.put("cmd","boolean,");
 		map.put("visible", "boolean,");
 		map.put("icon", "text,");
-		map.put("shop", "text");
+		map.put("shop", "text,");
+		map.put("vote", "int");
 		createTable(map);
 	}
 	
 	public void insert(DBServer server) {
-        execute(new Insert(insertIntoTable() + " (displayName,owner,plugins,players,port,status,world,host,motd,cmd,visible,icon,shop) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        execute(new Insert(insertIntoTable() + " (displayName,owner,plugins,players,port,status,world,host,motd,cmd,visible,icon,shop,vote) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 server.getDisplayName(),
                 server.getOwner().toString(),
                 gson.toJson(server.getPlugins()),
@@ -56,7 +57,8 @@ public class ServersTable extends MySQLStorage {
                 server.getCmd(),
                 server.getVisible(),
                 server.getIcon(),
-                gson.toJson(server.getShop())) {
+                gson.toJson(server.getShop()),
+                server.getVote()) {
             @Override
             public void onInsert(List<Integer> integers) {
                 if (!integers.isEmpty())
@@ -89,6 +91,7 @@ public class ServersTable extends MySQLStorage {
                         server.setVisible(resultSet.getBoolean("visible"));
                         server.setIcon(resultSet.getString("icon"));
                         server.setShop(gson.fromJson(resultSet.getString("shop"), DBShop.class));
+                        server.setVote(resultSet.getInt("vote"));
                         setReturnValue(true);
                     }else setReturnValue(false);
                 } catch (SQLException e) {
@@ -119,7 +122,8 @@ public class ServersTable extends MySQLStorage {
                         		resultSet.getBoolean("cmd"),
                         		resultSet.getBoolean("visible"),
                         		resultSet.getString("icon"),
-                        		gson.fromJson(resultSet.getString("shop"), DBShop.class)));
+                        		gson.fromJson(resultSet.getString("shop"), DBShop.class),
+                        		resultSet.getInt("vote")));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -149,7 +153,8 @@ public class ServersTable extends MySQLStorage {
                         		resultSet.getBoolean("cmd"),
                         		resultSet.getBoolean("visible"),
                         		resultSet.getString("icon"),
-                        		gson.fromJson(resultSet.getString("shop"), DBShop.class)));
+                        		gson.fromJson(resultSet.getString("shop"), DBShop.class),
+                        		resultSet.getInt("vote")));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -179,7 +184,8 @@ public class ServersTable extends MySQLStorage {
                         		resultSet.getBoolean("cmd"),
                         		resultSet.getBoolean("visible"),
                         		resultSet.getString("icon"),
-                        		gson.fromJson(resultSet.getString("shop"), DBShop.class)));
+                        		gson.fromJson(resultSet.getString("shop"), DBShop.class),
+                        		resultSet.getInt("vote")));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -226,7 +232,8 @@ public class ServersTable extends MySQLStorage {
                         		resultSet.getBoolean("cmd"),
                         		resultSet.getBoolean("visible"),
                         		resultSet.getString("icon"),
-                        		gson.fromJson(resultSet.getString("shop"), DBShop.class)));
+                        		gson.fromJson(resultSet.getString("shop"), DBShop.class),
+                        		resultSet.getInt("vote")));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -257,7 +264,8 @@ public class ServersTable extends MySQLStorage {
                     			resultSet.getBoolean("cmd"),
                     			resultSet.getBoolean("visible"),
                     			resultSet.getString("icon"),
-                    			gson.fromJson(resultSet.getString("shop"), DBShop.class)));
+                    			gson.fromJson(resultSet.getString("shop"), DBShop.class),
+                    			resultSet.getInt("vote")));
                     }
                     setReturnValue(servers);
                 } catch (SQLException e) {
@@ -290,7 +298,8 @@ public class ServersTable extends MySQLStorage {
                     			resultSet.getBoolean("cmd"),
                     			resultSet.getBoolean("visible"),
                     			resultSet.getString("icon"),
-                    			gson.fromJson(resultSet.getString("shop"), DBShop.class)));
+                    			gson.fromJson(resultSet.getString("shop"), DBShop.class),
+                    			resultSet.getInt("vote")));
                     }
                     setReturnValue(servers);
                 } catch (SQLException e) {
@@ -323,7 +332,8 @@ public class ServersTable extends MySQLStorage {
                     			resultSet.getBoolean("cmd"),
                     			resultSet.getBoolean("visible"),
                     			resultSet.getString("icon"),
-                    			gson.fromJson(resultSet.getString("shop"), DBShop.class)));
+                    			gson.fromJson(resultSet.getString("shop"), DBShop.class),
+                    			resultSet.getInt("vote")));
                     }
                     setReturnValue(servers);
                 } catch (SQLException e) {
@@ -334,9 +344,9 @@ public class ServersTable extends MySQLStorage {
 	}
 	
 	public void update(DBServer server) {
-        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,owner = ?,plugins = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,shop = ? WHERE id = ?",
+        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,owner = ?,plugins = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,shop = ?,vote = ? WHERE id = ?",
         		server.getDisplayName(),server.getPlayers(), server.getPort(), server.getOwner().toString(),
         		gson.toJson(server.getPlugins()),server.getStatus().name(), server.getWorld(), server.getHost(), 
-        		server.getMotd(), server.getCmd(), server.getVisible(), server.getIcon(), gson.toJson(server.getShop()), server.getID());
+        		server.getMotd(), server.getCmd(), server.getVisible(), server.getIcon(), gson.toJson(server.getShop()),server.getVote(), server.getID());
     }
 }

@@ -14,14 +14,34 @@ public class DBPlayer {
 	private long rc;
 	private boolean offlineBoot;
 	private Date rankExp;
+	private Date nextVote;
+	private boolean online;
 	
-	public DBPlayer(int id, UUID uuid, Rank rank, long rc, boolean offline, Date exp) {
+	public DBPlayer(int id, UUID uuid, Rank rank, long rc, boolean offline, Date exp, Date nextVote, boolean online) {
 		this.id = id;
 		this.uuid = uuid;
 		this.rank = rank;
 		this.rc = rc;
 		this.offlineBoot = offline;
 		this.rankExp = exp;
+		this.nextVote = nextVote;
+		this.online = online;
+	}
+	
+	public boolean getOnline() {
+		return this.online;
+	}
+	
+	public void setOnline(boolean bool) {
+		this.online = bool;
+	}
+	
+	public Date getNextVote() {
+		return this.nextVote;
+	}
+	
+	public void setNextVote(Date date) {
+		this.nextVote = date;
 	}
 	
 	public Date getRankExpire() {
@@ -101,28 +121,34 @@ public class DBPlayer {
 	
 	public enum Rank {
 		
-		NORMAL("","1G",20),MEDIA("§a[MEDIA]","2G",25,true),
-		DEVELOPER("§5[DEVELOPER]","3G",40,true),STAFF("§2[STAFF]","2G",25,true)
-		,SPECIAL("§d[SPECIAL]","3G",30,true),OWNER("§6[OWNER]","4G",40,true)
-		,GOLD("§6[GOLD]","2G",25,true),DIAMOND("§3[DIAMOND]","3G",30,true),EMERALD("§a[EMERALD]","4G",40,true);
+		NORMAL("","1G",20,2,false,false),MEDIA("§a[MEDIA]","2G",25,3,true,false),
+		DEVELOPER("§5[DEVELOPER]","4G",40,5,true,true),STAFF("§2[STAFF]","2G",25,3,true,false)
+		,SPECIAL("§d[SPECIAL]","3G",30,4,true,false),OWNER("§6[OWNER]","4G",40,5,true,true)
+		,GOLD("§6[GOLD]","2G",25,3,true,false),DIAMOND("§3[DIAMOND]","3G",30,4,true,false),EMERALD("§a[EMERALD]","4G",40,5,true,false)
+		,CUSTOM("§d[CUSTOM]","4G",40,5,true,true);
 		
 		String prefix;
 		String mem;
 		int players;
 		boolean boot;
+		int backups;
+		boolean plugin;
 		
-		Rank(String prefix, String mem, int max) {
-			this.prefix = prefix;
-			this.mem = mem;
-			this.players = max;
-			this.boot = false;
-		}
-		
-		Rank(String prefix, String mem, int max, boolean boot) {
+		Rank(String prefix, String mem, int max, int back, boolean boot, boolean plugin) {
 			this.prefix = prefix;
 			this.mem = mem;
 			this.players = max;
 			this.boot = boot;
+			this.backups = back;
+			this.plugin = plugin;
+		}
+		
+		public boolean getPluginUpload() {
+			return this.plugin;
+		}
+		
+		public int getMaxBackups() {
+			return this.backups;
 		}
 		
 		public String getPrefix() {
