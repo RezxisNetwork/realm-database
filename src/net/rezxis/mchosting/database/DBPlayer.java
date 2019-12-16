@@ -16,6 +16,9 @@ public class DBPlayer {
 	private Date rankExp;
 	private Date nextVote;
 	private boolean online;
+	private ArrayList<String> ips;
+	private boolean ban;
+	private boolean reason;
 	
 	public DBPlayer(int id, UUID uuid, Rank rank, long rc, boolean offline, Date exp, Date nextVote, boolean online) {
 		this.id = id;
