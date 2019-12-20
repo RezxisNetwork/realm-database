@@ -2,6 +2,9 @@ package net.rezxis.mchosting.database;
 
 import java.util.ArrayList;
 
+import lombok.Getter;
+
+@Getter
 public class DBPlugin {
 
 	private String name;
@@ -14,21 +17,5 @@ public class DBPlugin {
 		this.jarName = jarName;
 		this.version = version;
 		this.depends = depends;
-	}
-	
-	public String getName() {
-		return this.name;
-	}
-	
-	public String getVersion() {
-		return this.version;
-	}
-	
-	public String getJarName() {
-		return this.jarName;
-	}
-	
-	public ArrayList<String> getDepends() {
-		return this.depends;
 	}
 }

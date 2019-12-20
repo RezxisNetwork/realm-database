@@ -2,8 +2,12 @@ package net.rezxis.mchosting.database;
 
 import java.util.Date;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.rezxis.mchosting.database.tables.BackupsTable;
 
+@Getter
+@Setter
 public class DBBackup {
 
 	private Date creation;
@@ -20,47 +24,7 @@ public class DBBackup {
 		this.host = host;
 	}
 	
-	public int getHost() {
-		return this.host;
-	}
-	
-	public void setHost(int i) {
-		this.host = i;
-	}
-	
-	public String getName() {
-		return this.name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public void setOwner(String own) {
-		this.owner = own;
-	}
-	
-	public String getOwner() {
-		return this.owner;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	public int getId() {
-		return this.id;
-	}
-	
-	public void setCreationDate(Date date) {
-		this.creation = date;
-	}
-	
 	public void update() {
 		BackupsTable.instnace.update(this);
-	}
-	
-	public Date getCreationDate() {
-		return this.creation;
 	}
 }

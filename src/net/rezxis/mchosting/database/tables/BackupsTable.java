@@ -35,7 +35,7 @@ public class BackupsTable extends MySQLStorage {
     	execute(new Insert(insertIntoTable() + " (owner,name,creation,location) VALUES (?,?,?,?)",
                 back.getOwner(),
                 back.getName(),
-                back.getCreationDate(),
+                back.getCreation(),
                 back.getHost()) {
             @Override
             public void onInsert(List<Integer> keys) {
@@ -54,7 +54,7 @@ public class BackupsTable extends MySQLStorage {
         		obj.getOwner(),
         		obj.getName(),
         		obj.getHost(),
-        		obj.getCreationDate(),
+        		obj.getCreation(),
         		obj.getId());
     }
     

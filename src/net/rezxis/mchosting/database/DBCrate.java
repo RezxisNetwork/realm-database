@@ -1,7 +1,11 @@
 package net.rezxis.mchosting.database;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.rezxis.mchosting.database.crates.CrateTypes;
 
+@Getter
+@Setter
 public class DBCrate {
 
     private long id;
@@ -11,8 +15,4 @@ public class DBCrate {
         this.id = id;
         this.type = type;
     }
-
-    public long getId() { return id; }
-
-    public CrateTypes getType() { return type; }
 }

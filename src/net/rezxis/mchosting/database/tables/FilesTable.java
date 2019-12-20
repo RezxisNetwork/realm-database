@@ -98,7 +98,7 @@ public class FilesTable extends MySQLStorage{
 		execute(new Insert(insertIntoTable() + " (uuid,secret,uploaded,name,time,type) VALUES (?,?,?,?,?,?)",
                 file.getUUID(),
                 file.getSecret(),
-                file.getUploaded(),
+                file.isUploaded(),
                 file.getName(),
                 file.getTime(),
                 file.getType().name()

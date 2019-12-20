@@ -3,6 +3,8 @@ package net.rezxis.mchosting.database;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.rezxis.mchosting.database.tables.ServersTable;
 
 public class DBServer {
