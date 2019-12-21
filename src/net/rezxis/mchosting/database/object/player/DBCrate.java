@@ -1,4 +1,4 @@
-package net.rezxis.mchosting.database;
+package net.rezxis.mchosting.database.object.player;
 
 import lombok.Getter;
 import lombok.Setter;

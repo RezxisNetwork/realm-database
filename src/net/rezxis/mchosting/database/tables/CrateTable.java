@@ -2,9 +2,9 @@ package net.rezxis.mchosting.database.tables;
 
 import com.google.gson.Gson;
 
-import net.rezxis.mchosting.database.DBCrate;
 import net.rezxis.mchosting.database.MySQLStorage;
 import net.rezxis.mchosting.database.crates.CrateTypes;
+import net.rezxis.mchosting.database.object.player.DBCrate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

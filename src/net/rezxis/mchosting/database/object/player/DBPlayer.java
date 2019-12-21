@@ -1,4 +1,4 @@
-package net.rezxis.mchosting.database;
+package net.rezxis.mchosting.database.object.player;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.rezxis.mchosting.database.ColorUtil;
 import net.rezxis.mchosting.database.tables.PlayersTable;
 
 @Getter
@@ -20,11 +21,10 @@ public class DBPlayer {
 	private Date RankExpire;
 	private Date nextVote;
 	private boolean online;
-	private ArrayList<String> ips;
 	private boolean ban;
 	private String reason;
 	
-	public DBPlayer(int id, UUID uuid, Rank rank, long rc, boolean offline, Date exp, Date nextVote, boolean online, ArrayList<String> ips, boolean ban, String reason) {
+	public DBPlayer(int id, UUID uuid, Rank rank, long rc, boolean offline, Date exp, Date nextVote, boolean online, boolean ban, String reason) {
 		this.id = id;
 		this.UUID = uuid;
 		this.rank = rank;
@@ -33,7 +33,6 @@ public class DBPlayer {
 		this.RankExpire = exp;
 		this.nextVote = nextVote;
 		this.online = online;
-		this.ips = ips;
 		this.ban = ban;
 		this.reason = reason;
 	}

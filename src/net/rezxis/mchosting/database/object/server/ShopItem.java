@@ -1,4 +1,4 @@
-package net.rezxis.mchosting.database;
+package net.rezxis.mchosting.database.object.server;
 
 public class ShopItem {
 	private String name;

@@ -9,10 +9,10 @@ import java.util.UUID;
 
 import com.google.gson.Gson;
 
-import net.rezxis.mchosting.database.DBServer;
-import net.rezxis.mchosting.database.DBShop;
 import net.rezxis.mchosting.database.MySQLStorage;
-import net.rezxis.mchosting.database.ServerStatus;
+import net.rezxis.mchosting.database.object.server.DBServer;
+import net.rezxis.mchosting.database.object.server.DBShop;
+import net.rezxis.mchosting.database.object.server.ServerStatus;
 
 public class ServersTable extends MySQLStorage {
 

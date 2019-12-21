@@ -8,9 +8,9 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
-import net.rezxis.mchosting.database.DBBackup;
-import net.rezxis.mchosting.database.DBPlayer;
 import net.rezxis.mchosting.database.MySQLStorage;
+import net.rezxis.mchosting.database.object.internal.DBBackup;
+import net.rezxis.mchosting.database.object.player.DBPlayer;
 
 public class BackupsTable extends MySQLStorage {
 

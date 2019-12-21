@@ -9,9 +9,9 @@ import java.util.UUID;
 
 import com.google.gson.Gson;
 
-import net.rezxis.mchosting.database.DBPlayer;
 import net.rezxis.mchosting.database.MySQLStorage;
-import net.rezxis.mchosting.database.DBPlayer.Rank;
+import net.rezxis.mchosting.database.object.player.DBPlayer;
+import net.rezxis.mchosting.database.object.player.DBPlayer.Rank;
 
 public class PlayersTable extends MySQLStorage {
 
@@ -32,7 +32,6 @@ public class PlayersTable extends MySQLStorage {
 		map.put("rexp", "datetime,");
 		map.put("nvote", "datetime,");
 		map.put("online", "boolean,");
-		map.put("ips", "text,");
 		map.put("ban","boolean,");
 		map.put("reason","text");
 		createTable(map);
@@ -52,7 +51,6 @@ public class PlayersTable extends MySQLStorage {
                     	player.setRankExpire(resultSet.getDate("rexp"));
                     	player.setNextVote(resultSet.getDate("nvote"));
                     	player.setOnline(resultSet.getBoolean("online"));
-                    	player.setIps(gson.fromJson(resultSet.getString("ips"), ArrayList.class));
                     	player.setBan(resultSet.getBoolean("ban"));
                     	player.setReason(resultSet.getString("reason"));
                         setReturnValue(true);
@@ -65,7 +63,7 @@ public class PlayersTable extends MySQLStorage {
     }
 	
 	public void insert(DBPlayer player) {
-        execute(new Insert(insertIntoTable() + " (uuid,rank,coin,ofb,rexp,nvote,online,ips,ban,reason) VALUES (?,?,?,?,?,?,?,?,?,?)",
+        execute(new Insert(insertIntoTable() + " (uuid,rank,coin,ofb,rexp,nvote,online,ban,reason) VALUES (?,?,?,?,?,?,?,?,?)",
                 player.getUUID().toString(),
                 player.getRank().name(),
                 player.getCoin(),
@@ -73,7 +71,6 @@ public class PlayersTable extends MySQLStorage {
                 player.getRankExpire(),
                 player.getNextVote(),
                 player.isOnline(),
-                gson.toJson(player.getIps()),
                 player.isBan(),
                 player.getReason()
         		) {
@@ -85,12 +82,39 @@ public class PlayersTable extends MySQLStorage {
         });
     }
 	
+	public DBPlayer getFromID(int id) {
+        return (DBPlayer) executeQuery(new Query(selectFromTable("*","id = ?"),id) {
+            @Override
+            protected void onResult(ResultSet resultSet) {
+                try {
+                    //setReturnValue(null);
+                    if(resultSet.next())
+                    {
+                        setReturnValue(new DBPlayer(resultSet.getInt("id"),
+                        		UUID.fromString(resultSet.getString("uuid")),
+                        		DBPlayer.Rank.valueOf(resultSet.getString("rank")),
+                        		resultSet.getInt("coin"),
+                        		resultSet.getBoolean("ofb"),
+                        		resultSet.getDate("rexp"),
+                        		resultSet.getDate("nvote"),
+                        		resultSet.getBoolean("online"),
+                        		resultSet.getBoolean("ban"),
+                        		resultSet.getString("reason")
+                        		));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+	
 	public DBPlayer get(final UUID uuid) {
         return (DBPlayer) executeQuery(new Query(selectFromTable("*","uuid = ?"),uuid.toString()) {
             @Override
             protected void onResult(ResultSet resultSet) {
                 try {
-                    setReturnValue(null);
+                    //setReturnValue(null);
                     if(resultSet.next())
                     {
                         setReturnValue(new DBPlayer(resultSet.getInt("id"),
@@ -101,7 +125,6 @@ public class PlayersTable extends MySQLStorage {
                         		resultSet.getDate("rexp"),
                         		resultSet.getDate("nvote"),
                         		resultSet.getBoolean("online"),
-                        		gson.fromJson(resultSet.getString("ips"), ArrayList.class),
                         		resultSet.getBoolean("ban"),
                         		resultSet.getString("reason")
                         		));
@@ -131,7 +154,6 @@ public class PlayersTable extends MySQLStorage {
                         		resultSet.getDate("rexp"),
                         		resultSet.getDate("nvote"),
                         		resultSet.getBoolean("online"),
-                        		gson.fromJson(resultSet.getString("ips"), ArrayList.class),
                         		resultSet.getBoolean("ban"),
                         		resultSet.getString("reason")));
                     }
@@ -149,7 +171,7 @@ public class PlayersTable extends MySQLStorage {
 	}
 	
 	public void update(DBPlayer player) {
-        execute("UPDATE " + getTable() + " SET uuid = ?, rank = ?, coin = ?,ofb = ?,rexp = ?,nvote = ?,online = ?,ips = ?,ban = ?, reason = ? WHERE id = ?",
+        execute("UPDATE " + getTable() + " SET uuid = ?, rank = ?, coin = ?,ofb = ?,rexp = ?,nvote = ?,online = ?,ban = ?, reason = ? WHERE id = ?",
         		player.getUUID().toString(),
         		player.getRank().name(),
         		player.getCoin(),
@@ -157,7 +179,6 @@ public class PlayersTable extends MySQLStorage {
         		player.getRankExpire(),
         		player.getNextVote(),
         		player.isOnline(),
-        		gson.toJson(player.getIps()),
         		player.isBan(),
         		player.getReason(),
         		player.getId());

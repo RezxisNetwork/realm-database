@@ -9,8 +9,8 @@ import java.util.List;
 
 import com.google.gson.Gson;
 
-import net.rezxis.mchosting.database.DBPlugin;
 import net.rezxis.mchosting.database.MySQLStorage;
+import net.rezxis.mchosting.database.object.server.DBPlugin;
 
 public class PluginsTable extends MySQLStorage {
 

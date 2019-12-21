@@ -5,9 +5,9 @@ import java.sql.SQLException;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import net.rezxis.mchosting.database.DBFile;
 import net.rezxis.mchosting.database.MySQLStorage;
-import net.rezxis.mchosting.database.DBFile.Type;
+import net.rezxis.mchosting.database.object.internal.DBFile;
+import net.rezxis.mchosting.database.object.internal.DBFile.Type;
 
 public class FilesTable extends MySQLStorage{
 

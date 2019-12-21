@@ -1,4 +1,4 @@
-package net.rezxis.mchosting.database;
+package net.rezxis.mchosting.database.object.internal;
 
 import java.util.Date;
 
