@@ -18,7 +18,6 @@ public enum CrateTypes {
         this.displayItem = displayItem;
         this.lang = lang;
     }
-
     /*public static CrateTypes getByCrate(DBCrate crate) {
         for(CrateTypes ct : values()) {
             if(ct.name.equals(crate.getType())) {

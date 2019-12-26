@@ -23,8 +23,9 @@ public class DBPlayer {
 	private boolean online;
 	private boolean ban;
 	private String reason;
+	private boolean vpnBypass;
 	
-	public DBPlayer(int id, UUID uuid, Rank rank, long rc, boolean offline, Date exp, Date nextVote, boolean online, boolean ban, String reason) {
+	public DBPlayer(int id, UUID uuid, Rank rank, long rc, boolean offline, Date exp, Date nextVote, boolean online, boolean ban, String reason, boolean vpnBypass) {
 		this.id = id;
 		this.UUID = uuid;
 		this.rank = rank;
@@ -35,6 +36,7 @@ public class DBPlayer {
 		this.online = online;
 		this.ban = ban;
 		this.reason = reason;
+		this.vpnBypass = vpnBypass;
 	}
 	
 	public void addCoin(long num) {
