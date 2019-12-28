@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import com.google.gson.Gson;
 
 import net.rezxis.mchosting.database.MySQLStorage;
-import net.rezxis.mchosting.database.object.internal.DBEvent;
 
 public class EventsTable extends MySQLStorage {
 
