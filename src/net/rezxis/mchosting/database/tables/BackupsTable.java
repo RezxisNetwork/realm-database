@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 
 import net.rezxis.mchosting.database.MySQLStorage;
 import net.rezxis.mchosting.database.object.internal.DBBackup;
-import net.rezxis.mchosting.database.object.player.DBPlayer;
 
 public class BackupsTable extends MySQLStorage {
 
@@ -27,16 +26,18 @@ public class BackupsTable extends MySQLStorage {
         map.put("owner", "text,");
         map.put("name", "text,");
         map.put("location", "int,");
-        map.put("creation", "datetime");
+        map.put("creation", "datetime,");
+        map.put("plugins", "text");
         createTable(map);
     }
     
     public void insert(DBBackup back) {
-    	execute(new Insert(insertIntoTable() + " (owner,name,creation,location) VALUES (?,?,?,?)",
+    	execute(new Insert(insertIntoTable() + " (owner,name,creation,location,plugins) VALUES (?,?,?,?,?)",
                 back.getOwner(),
                 back.getName(),
                 back.getCreation(),
-                back.getHost()) {
+                back.getHost(),
+                gson.toJson(back.getPlugins())) {
             @Override
             public void onInsert(List<Integer> keys) {
             	if (!keys.isEmpty())
@@ -50,17 +51,19 @@ public class BackupsTable extends MySQLStorage {
 	}
     
     public void update(DBBackup obj) {
-        execute("UPDATE " + getTable() + " SET owner = ?, name = ?, location = ?, creation = ? WHERE id = ?",
+        execute("UPDATE " + getTable() + " SET owner = ?, name = ?, location = ?, creation = ?,plugins = ? WHERE id = ?",
         		obj.getOwner(),
         		obj.getName(),
         		obj.getHost(),
         		obj.getCreation(),
+        		gson.toJson(obj.getPlugins()),
         		obj.getId());
     }
     
     public DBBackup getBackupFromID(int id) {
     	return (DBBackup) executeQuery(new Query(selectFromTable("*","id = ?"),id) {
-            @Override
+            @SuppressWarnings("unchecked")
+			@Override
             protected void onResult(ResultSet resultSet) {
                 try {
                     if(resultSet.next())
@@ -69,7 +72,8 @@ public class BackupsTable extends MySQLStorage {
                     			resultSet.getInt("location"),
                     			resultSet.getString("owner"),
                     			resultSet.getString("name"),
-                    			resultSet.getDate("creation")));
+                    			resultSet.getDate("creation"),
+                    			gson.fromJson(resultSet.getString("plugins"), ArrayList.class)));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -92,7 +96,8 @@ public class BackupsTable extends MySQLStorage {
                     			resultSet.getInt("location"),
                     			owner,
                     			resultSet.getString("name"),
-                    			resultSet.getDate("creation")));
+                    			resultSet.getDate("creation"),
+                    			gson.fromJson(resultSet.getString("plugins"), ArrayList.class)));
                     }
                     setReturnValue(arr);
                 } catch (SQLException e) {
