@@ -74,7 +74,7 @@ public class DBPlayer {
 		
 		NORMAL("","1G",20,2,false,false),MEDIA(ColorUtil.COLOR_CHAR+"a[MEDIA]","2G",25,3,true,false),
 		DEVELOPER(ColorUtil.COLOR_CHAR+"5[DEVELOPER]","4G",40,5,true,true),STAFF(ColorUtil.COLOR_CHAR+"2[STAFF]","2G",25,3,true,false)
-		,SPECIAL(ColorUtil.COLOR_CHAR+"d[SPECIAL]","3G",30,4,true,false),OWNER(ColorUtil.COLOR_CHAR+"6[OWNER]","4G",40,5,true,true)
+		,SPECIAL(ColorUtil.COLOR_CHAR+"d[SPECIAL]","4G",40,5,true,false),OWNER(ColorUtil.COLOR_CHAR+"6[OWNER]","4G",40,5,true,true)
 		,GOLD(ColorUtil.COLOR_CHAR+"6[GOLD]","2G",25,3,true,false),DIAMOND(ColorUtil.COLOR_CHAR+"3[DIAMOND]","3G",30,4,true,false),EMERALD(ColorUtil.COLOR_CHAR+"a[EMERALD]","4G",40,5,true,false)
 		,CUSTOM(ColorUtil.COLOR_CHAR+"d[CUSTOM]","4G",40,5,true,true);
 		

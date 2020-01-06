@@ -2,6 +2,7 @@ package net.rezxis.mchosting.database;
 
 import com.jolbox.bonecp.BoneCP;
 import com.jolbox.bonecp.BoneCPConfig;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -16,11 +17,11 @@ public class MySQLProvider {
 	}
 
 	public void addPool(String configName)throws Exception{
-		String hostname = Database.getProps().DB_HOST;
-	    String port = Database.getProps().DB_PORT;
-	    String dbname = Database.getProps().DB_NAME;
-	    String username = Database.getProps().DB_USER;
-	    String password = Database.getProps().DB_PASS;
+		String hostname = Database.getHost();
+	    String port = Database.getPort();
+	    String dbname = Database.getName();
+	    String username = Database.getUser();
+	    String password = Database.getPass();
 	    Properties properties = new Properties();
 	    properties.setProperty("characterEncoding", "UTF-8");
 	    properties.setProperty("useUnicode", "true");

@@ -36,6 +36,7 @@ public class DBServer {
 		this.owner = owner;
 		this.port = port;
 		this.plugins = plugins;
+		this.players = players;
 		this.status = status;
 		this.world = world;
 		this.host = host;
