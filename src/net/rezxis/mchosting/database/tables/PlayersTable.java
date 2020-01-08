@@ -34,7 +34,11 @@ public class PlayersTable extends MySQLStorage {
 		map.put("online", "boolean,");
 		map.put("ban","boolean,");
 		map.put("reason","text,");
-		map.put("vpn", "boolean");
+		map.put("vpn", "boolean,");
+		map.put("support", "boolean,");
+		map.put("suexp", "datetime,");
+		map.put("prefix", "text,");
+		map.put("vault", "INT");
 		createTable(map);
 	}
 	
@@ -55,6 +59,10 @@ public class PlayersTable extends MySQLStorage {
                     	player.setBan(resultSet.getBoolean("ban"));
                     	player.setReason(resultSet.getString("reason"));
                     	player.setVpnBypass(resultSet.getBoolean("vpn"));
+                    	player.setSupporter(resultSet.getBoolean("support"));
+                    	player.setSupporterExpire(resultSet.getDate("suexp"));
+                    	player.setPrefix(resultSet.getString("prefix"));
+                    	player.setVault(resultSet.getInt("vault"));
                         setReturnValue(true);
                     }else setReturnValue(false);
                 } catch (SQLException e) {
@@ -65,7 +73,7 @@ public class PlayersTable extends MySQLStorage {
     }
 	
 	public void insert(DBPlayer player) {
-        execute(new Insert(insertIntoTable() + " (uuid,rank,coin,ofb,rexp,nvote,online,ban,reason,vpn) VALUES (?,?,?,?,?,?,?,?,?,?)",
+        execute(new Insert(insertIntoTable() + " (uuid,rank,coin,ofb,rexp,nvote,online,ban,reason,vpn,support,suexp,prefix,vault) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 player.getUUID().toString(),
                 player.getRank().name(),
                 player.getCoin(),
@@ -75,7 +83,11 @@ public class PlayersTable extends MySQLStorage {
                 player.isOnline(),
                 player.isBan(),
                 player.getReason(),
-                player.isVpnBypass()
+                player.isVpnBypass(),
+                player.isSupporter(),
+                player.getSupporterExpire(),
+                player.getPrefix(),
+                player.getVault()
         		) {
             @Override
             public void onInsert(List<Integer> integers) {
@@ -103,7 +115,11 @@ public class PlayersTable extends MySQLStorage {
                         		resultSet.getBoolean("online"),
                         		resultSet.getBoolean("ban"),
                         		resultSet.getString("reason"),
-                        		resultSet.getBoolean("vpn")
+                        		resultSet.getBoolean("vpn"),
+                        		resultSet.getBoolean("support"),
+                        		resultSet.getDate("suexp"),
+                        		resultSet.getString("prefix"),
+                        		resultSet.getInt("vault")
                         		));
                     }
                 } catch (SQLException e) {
@@ -131,7 +147,11 @@ public class PlayersTable extends MySQLStorage {
                         		resultSet.getBoolean("online"),
                         		resultSet.getBoolean("ban"),
                         		resultSet.getString("reason"),
-                        		resultSet.getBoolean("vpn")
+                        		resultSet.getBoolean("vpn"),
+                        		resultSet.getBoolean("support"),
+                        		resultSet.getDate("suexp"),
+                        		resultSet.getString("prefix"),
+                        		resultSet.getInt("vault")
                         		));
                     }
                 } catch (SQLException e) {
@@ -161,7 +181,12 @@ public class PlayersTable extends MySQLStorage {
                         		resultSet.getBoolean("online"),
                         		resultSet.getBoolean("ban"),
                         		resultSet.getString("reason"),
-                        		resultSet.getBoolean("vpn")));
+                        		resultSet.getBoolean("vpn"),
+                        		resultSet.getBoolean("support"),
+                        		resultSet.getDate("suexp"),
+                        		resultSet.getString("prefix"),
+                        		resultSet.getInt("vault")
+                        		));
                     }
                     setReturnValue(arr);
                 } catch (SQLException e) {
@@ -177,7 +202,7 @@ public class PlayersTable extends MySQLStorage {
 	}
 	
 	public void update(DBPlayer player) {
-        execute("UPDATE " + getTable() + " SET uuid = ?, rank = ?, coin = ?,ofb = ?,rexp = ?,nvote = ?,online = ?,ban = ?, reason = ?, vpn = ? WHERE id = ?",
+        execute("UPDATE " + getTable() + " SET uuid = ?, rank = ?, coin = ?,ofb = ?,rexp = ?,nvote = ?,online = ?,ban = ?, reason = ?, vpn = ?, support = ?, suexp = ?, prefix = ?,vault = ? WHERE id = ?",
         		player.getUUID().toString(),
         		player.getRank().name(),
         		player.getCoin(),
@@ -188,6 +213,10 @@ public class PlayersTable extends MySQLStorage {
         		player.isBan(),
         		player.getReason(),
         		player.isVpnBypass(),
+        		player.isSupporter(),
+        		player.getSupporterExpire(),
+        		player.getPrefix(),
+        		player.getVault(),
         		player.getId());
     }
 }

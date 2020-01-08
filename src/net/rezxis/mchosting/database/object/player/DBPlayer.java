@@ -24,8 +24,14 @@ public class DBPlayer {
 	private boolean ban;
 	private String reason;
 	private boolean vpnBypass;
+	private boolean isSupporter;
+	private Date supporterExpire;
+	private String prefix;
+	private int vault;
 	
-	public DBPlayer(int id, UUID uuid, Rank rank, long rc, boolean offline, Date exp, Date nextVote, boolean online, boolean ban, String reason, boolean vpnBypass) {
+	public DBPlayer(int id, UUID uuid, Rank rank, long rc, boolean offline, Date exp,
+			Date nextVote, boolean online, boolean ban, String reason, boolean vpnBypass,
+			boolean isSupporter, Date supporterExpire, String prefix, int vault) {
 		this.id = id;
 		this.UUID = uuid;
 		this.rank = rank;
@@ -37,6 +43,10 @@ public class DBPlayer {
 		this.ban = ban;
 		this.reason = reason;
 		this.vpnBypass = vpnBypass;
+		this.isSupporter = isSupporter;
+		this.supporterExpire = supporterExpire;
+		this.prefix = prefix;
+		this.vault = vault;
 	}
 	
 	public void addCoin(long num) {
@@ -59,11 +69,18 @@ public class DBPlayer {
 		return this.RankExpire.before(new Date());
 	}
 	
+	public boolean isExpiredSupporter() {
+		if (!isSupporter)
+			return false;
+		if (supporterExpire.before(new Date()))
+			return true;
+		return false;
+	}
+	
 	private static ArrayList<Rank> ignore;
 	
 	static {
 		ignore = new ArrayList<Rank>();
-		ignore.add(Rank.MEDIA);
 		ignore.add(Rank.DEVELOPER);
 		ignore.add(Rank.STAFF);
 		ignore.add(Rank.SPECIAL);
@@ -72,11 +89,12 @@ public class DBPlayer {
 	
 	public enum Rank {
 		
-		NORMAL("","1G",20,2,false,false),MEDIA(ColorUtil.COLOR_CHAR+"a[MEDIA]","2G",25,3,true,false),
-		DEVELOPER(ColorUtil.COLOR_CHAR+"5[DEVELOPER]","4G",40,5,true,true),STAFF(ColorUtil.COLOR_CHAR+"2[STAFF]","2G",25,3,true,false)
-		,SPECIAL(ColorUtil.COLOR_CHAR+"d[SPECIAL]","4G",40,5,true,false),OWNER(ColorUtil.COLOR_CHAR+"6[OWNER]","4G",40,5,true,true)
-		,GOLD(ColorUtil.COLOR_CHAR+"6[GOLD]","2G",25,3,true,false),DIAMOND(ColorUtil.COLOR_CHAR+"3[DIAMOND]","3G",30,4,true,false),EMERALD(ColorUtil.COLOR_CHAR+"a[EMERALD]","4G",40,5,true,false)
-		,CUSTOM(ColorUtil.COLOR_CHAR+"d[CUSTOM]","4G",40,5,true,true);
+		NORMAL("","1G",20,2,false,false,false),
+		DEVELOPER(ColorUtil.COLOR_CHAR+"5[DEVELOPER]","4G",40,5,true,true,true),STAFF(ColorUtil.COLOR_CHAR+"2[STAFF]","4G",40,5,true,false,true)
+		,SPECIAL(ColorUtil.COLOR_CHAR+"d[SPECIAL]","4G",40,5,true,false,true),OWNER(ColorUtil.COLOR_CHAR+"6[OWNER]","4G",40,5,true,true,true)
+		,GOLD(ColorUtil.COLOR_CHAR+"6[GOLD]","2G",25,3,true,false,false),DIAMOND(ColorUtil.COLOR_CHAR+"3[DIAMOND]","3G",30,4,true,false,true)
+		,EMERALD(ColorUtil.COLOR_CHAR+"a[EMERALD]","4G",40,5,true,false,true)
+		,CUSTOM(ColorUtil.COLOR_CHAR+"d[CUSTOM]","4G",40,5,true,true,true);
 		
 		String prefix;
 		String mem;
@@ -84,14 +102,20 @@ public class DBPlayer {
 		boolean boot;
 		int backups;
 		boolean plugin;
+		boolean crateAll;
 		
-		Rank(String prefix, String mem, int max, int back, boolean boot, boolean plugin) {
+		Rank(String prefix, String mem, int max, int back, boolean boot, boolean plugin, boolean crateAll) {
 			this.prefix = prefix;
 			this.mem = mem;
 			this.players = max;
 			this.boot = boot;
 			this.backups = back;
 			this.plugin = plugin;
+			this.crateAll = crateAll;
+		}
+		
+		public boolean getCrateAllOpen() {
+			return this.crateAll;
 		}
 		
 		public boolean getPluginUpload() {

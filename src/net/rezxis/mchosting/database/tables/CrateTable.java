@@ -31,6 +31,22 @@ public class CrateTable extends MySQLStorage {
 
     @SuppressWarnings("unchecked")
     public List<DBCrate> getCrates(UUID player, int limit) {
+    	if (limit == -1) {
+    		return (List<DBCrate>) executeQuery(new Query(selectFromTable("*") + " WHERE owner = ?", player.toString()) {
+    			@Override
+                protected void onResult(ResultSet resultSet) {
+    				List<DBCrate> crates = new ArrayList<>();
+                    try {
+                        while (resultSet.next()) {
+                        	crates.add(new DBCrate(resultSet.getInt("id"), CrateTypes.valueOf(resultSet.getString("type"))));
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                    setReturnValue(crates);
+                }
+            });
+    	}
     	return (List<DBCrate>) executeQuery(new Query(selectFromTable("*") + " WHERE owner = ? LIMIT ?", player.toString(),limit) {
 			@Override
             protected void onResult(ResultSet resultSet) {

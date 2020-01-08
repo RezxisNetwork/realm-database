@@ -62,6 +62,6 @@ public class DBServer {
 	}
 	
 	public enum GameType {
-		NORMAL,CUSTOM;
+		NORMAL,CUSTOM,THIRD;
 	}
 }
