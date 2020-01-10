@@ -15,7 +15,7 @@ public class Database {
 	@Getter
 	private static String name;
 	
-	public static void init(String h,String u,String p,String po,String n) {
+	public static void init(String h,String u,String p,String po,String n, boolean hook) {
 		host = h;
 		user = u;
 		pass = p;
@@ -28,9 +28,16 @@ public class Database {
 			ex.printStackTrace();
 		}
 		MySQLProvider.init();
-		Runtime.getRuntime().addShutdownHook(new Thread(()-> {
-			MySQLProvider.closeAllConnections();
-		} ));
+		if (hook) {
+			Runtime.getRuntime().addShutdownHook(new Thread(()-> {
+				MySQLProvider.closeAllConnections();
+			} ));
+		}
 		System.out.println("Database was initialized.");
+		Tables.register();
+	}
+	
+	public static void init(String h,String u,String p,String po,String n) {
+		init(h,u,p,po,n,true);
 	}
 }

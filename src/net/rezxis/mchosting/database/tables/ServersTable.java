@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 
 import net.rezxis.mchosting.database.MySQLStorage;
 import net.rezxis.mchosting.database.object.server.DBServer;
@@ -97,7 +98,7 @@ public class ServersTable extends MySQLStorage {
                         server.setVote(resultSet.getInt("vote"));
                         server.setType(GameType.valueOf(resultSet.getString("type")));
                         setReturnValue(true);
-                    }else setReturnValue(false);
+                    } else setReturnValue(false);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -105,30 +106,61 @@ public class ServersTable extends MySQLStorage {
         });
     }
 	
+	public boolean existsWithName(String name) {
+        return (Boolean) executeQuery(new Query(selectFromTable("*") + " WHERE displayName = ?", name) {
+			@Override
+            protected void onResult(ResultSet resultSet) {
+                try {
+                    if (resultSet.next()) {
+                        setReturnValue(true);
+                    } else {
+                    	setReturnValue(false);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+	
+	@SuppressWarnings("unchecked")
+	private static DBServer convert(ResultSet resultSet) {
+		try {
+			return new DBServer(resultSet.getInt("id"),
+					resultSet.getString("displayName"),
+					UUID.fromString(resultSet.getString("owner")),
+					resultSet.getInt("port"),
+					gson.fromJson(resultSet.getString("plugins"),ArrayList.class),
+					resultSet.getInt("players"),
+					ServerStatus.valueOf(resultSet.getString("status")),
+					resultSet.getString("world"),
+					resultSet.getInt("host"),
+					resultSet.getString("motd"),
+					resultSet.getBoolean("cmd"),
+					resultSet.getBoolean("visible"),
+					resultSet.getString("icon"),
+					gson.fromJson(resultSet.getString("shop"), DBShop.class),
+					resultSet.getInt("vote"),
+					GameType.valueOf(resultSet.getString("type")));
+		} catch (JsonSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public DBServer getByPort(int port) {
 		return (DBServer) executeQuery(new Query(selectFromTable("*","port = ?"),port) {
-			@SuppressWarnings("unchecked")
 			@Override
             protected void onResult(ResultSet resultSet) {
                 try {
                     setReturnValue(null);
                     if(resultSet.next())
                     {
-                        setReturnValue(new DBServer(resultSet.getInt("id"),
-                        		resultSet.getString("displayName"),
-                        		UUID.fromString(resultSet.getString("owner")),port,
-                        		gson.fromJson(resultSet.getString("plugins"),ArrayList.class),
-                        		resultSet.getInt("players"),
-                        		ServerStatus.valueOf(resultSet.getString("status")),
-                        		resultSet.getString("world"),
-                        		resultSet.getInt("host"),
-                        		resultSet.getString("motd"),
-                        		resultSet.getBoolean("cmd"),
-                        		resultSet.getBoolean("visible"),
-                        		resultSet.getString("icon"),
-                        		gson.fromJson(resultSet.getString("shop"), DBShop.class),
-                        		resultSet.getInt("vote"),
-                        		GameType.valueOf(resultSet.getString("type"))));
+                        setReturnValue(convert(resultSet));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -139,28 +171,13 @@ public class ServersTable extends MySQLStorage {
 	
 	public DBServer getByID(int id) {
 		return (DBServer) executeQuery(new Query(selectFromTable("*","id = ?"),id) {
-			@SuppressWarnings("unchecked")
             @Override
             protected void onResult(ResultSet resultSet) {
                 try {
                     setReturnValue(null);
                     if(resultSet.next())
                     {
-                        setReturnValue(new DBServer(resultSet.getInt("id"),
-                        		resultSet.getString("displayName"),
-                        		UUID.fromString(resultSet.getString("owner")),resultSet.getInt("port"),
-                        		gson.fromJson(resultSet.getString("plugins"),ArrayList.class),
-                        		resultSet.getInt("players"),
-                        		ServerStatus.valueOf(resultSet.getString("status")),
-                        		resultSet.getString("world"),
-                        		resultSet.getInt("host"),
-                        		resultSet.getString("motd"),
-                        		resultSet.getBoolean("cmd"),
-                        		resultSet.getBoolean("visible"),
-                        		resultSet.getString("icon"),
-                        		gson.fromJson(resultSet.getString("shop"), DBShop.class),
-                        		resultSet.getInt("vote"),
-                        		GameType.valueOf(resultSet.getString("type"))));
+                        setReturnValue(convert(resultSet));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -171,28 +188,13 @@ public class ServersTable extends MySQLStorage {
 	
 	public DBServer get(final UUID uuid) {
         return (DBServer) executeQuery(new Query(selectFromTable("*","owner = ?"),uuid.toString()) {
-        	@SuppressWarnings("unchecked")
             @Override
             protected void onResult(ResultSet resultSet) {
                 try {
                     setReturnValue(null);
                     if(resultSet.next())
                     {
-                        setReturnValue(new DBServer(resultSet.getInt("id"),
-                        		resultSet.getString("displayName"),
-                        		uuid,resultSet.getInt("port"),
-                        		gson.fromJson(resultSet.getString("plugins"),ArrayList.class),
-                        		resultSet.getInt("players"),
-                        		ServerStatus.valueOf(resultSet.getString("status")),
-                        		resultSet.getString("world"),
-                        		resultSet.getInt("host"),
-                        		resultSet.getString("motd"),
-                        		resultSet.getBoolean("cmd"),
-                        		resultSet.getBoolean("visible"),
-                        		resultSet.getString("icon"),
-                        		gson.fromJson(resultSet.getString("shop"), DBShop.class),
-                        		resultSet.getInt("vote"),
-                        		GameType.valueOf(resultSet.getString("type"))));
+                        setReturnValue(convert(resultSet));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -220,28 +222,13 @@ public class ServersTable extends MySQLStorage {
 	
 	public DBServer getServerByName(String name) {
 		return (DBServer) executeQuery(new Query(selectFromTable("*","displayname= ?"), name) {
-			@SuppressWarnings("unchecked")
             @Override
             protected void onResult(ResultSet resultSet) {
                 try {
                     setReturnValue(null);
                     if(resultSet.next())
                     {
-                        setReturnValue(new DBServer(resultSet.getInt("id"),
-                        		name,
-                        		UUID.fromString(resultSet.getString("owner")),resultSet.getInt("port"),
-                        		gson.fromJson(resultSet.getString("plugins"),ArrayList.class),
-                        		resultSet.getInt("players"),
-                        		ServerStatus.valueOf(resultSet.getString("status")),
-                        		resultSet.getString("world"),
-                        		resultSet.getInt("host"),
-                        		resultSet.getString("motd"),
-                        		resultSet.getBoolean("cmd"),
-                        		resultSet.getBoolean("visible"),
-                        		resultSet.getString("icon"),
-                        		gson.fromJson(resultSet.getString("shop"), DBShop.class),
-                        		resultSet.getInt("vote"),
-                        		GameType.valueOf(resultSet.getString("type"))));
+                        setReturnValue(convert(resultSet));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -259,22 +246,7 @@ public class ServersTable extends MySQLStorage {
                     ArrayList<DBServer> servers = new ArrayList<>();
                     while (resultSet.next())
                     {
-                    	servers.add(new DBServer(resultSet.getInt("id"),
-                    			resultSet.getString("displayName"),
-                    			UUID.fromString(resultSet.getString("owner")),
-                    			resultSet.getInt("port"),
-                    			gson.fromJson(resultSet.getString("plugins"), ArrayList.class),
-                    			resultSet.getInt("players"),
-                    			ServerStatus.valueOf(resultSet.getString("status")),
-                    			resultSet.getString("world"),
-                    			resultSet.getInt("host"),
-                    			resultSet.getString("motd"),
-                    			resultSet.getBoolean("cmd"),
-                    			resultSet.getBoolean("visible"),
-                    			resultSet.getString("icon"),
-                    			gson.fromJson(resultSet.getString("shop"), DBShop.class),
-                    			resultSet.getInt("vote"),
-                    			GameType.valueOf(resultSet.getString("type"))));
+                    	servers.add(convert(resultSet));
                     }
                     setReturnValue(servers);
                 } catch (SQLException e) {
@@ -293,23 +265,7 @@ public class ServersTable extends MySQLStorage {
                     ArrayList<DBServer> servers = new ArrayList<>();
                     while (resultSet.next())
                     {
-                    	servers.add(
-                    			new DBServer(resultSet.getInt("id"),
-                    			resultSet.getString("displayName"),
-                    			UUID.fromString(resultSet.getString("owner")),
-                    			resultSet.getInt("port"),
-                    			gson.fromJson(resultSet.getString("plugins"), ArrayList.class),
-                    			resultSet.getInt("players"),
-                    			ServerStatus.RUNNING,
-                    			resultSet.getString("world"),
-                    			resultSet.getInt("host"),
-                    			resultSet.getString("motd"),
-                    			resultSet.getBoolean("cmd"),
-                    			resultSet.getBoolean("visible"),
-                    			resultSet.getString("icon"),
-                    			gson.fromJson(resultSet.getString("shop"), DBShop.class),
-                    			resultSet.getInt("vote"),
-                    			GameType.valueOf(resultSet.getString("type"))));
+                    	servers.add(convert(resultSet));
                     }
                     setReturnValue(servers);
                 } catch (SQLException e) {
@@ -328,23 +284,7 @@ public class ServersTable extends MySQLStorage {
                     ArrayList<DBServer> servers = new ArrayList<>();
                     while (resultSet.next())
                     {
-                    	servers.add(
-                    			new DBServer(resultSet.getInt("id"),
-                    			resultSet.getString("displayName"),
-                    			UUID.fromString(resultSet.getString("owner")),
-                    			resultSet.getInt("port"),
-                    			gson.fromJson(resultSet.getString("plugins"), ArrayList.class),
-                    			resultSet.getInt("players"),
-                    			ServerStatus.RUNNING,
-                    			resultSet.getString("world"),
-                    			resultSet.getInt("host"),
-                    			resultSet.getString("motd"),
-                    			resultSet.getBoolean("cmd"),
-                    			resultSet.getBoolean("visible"),
-                    			resultSet.getString("icon"),
-                    			gson.fromJson(resultSet.getString("shop"), DBShop.class),
-                    			resultSet.getInt("vote"),
-                    			GameType.valueOf(resultSet.getString("type"))));
+                    	servers.add(convert(resultSet));
                     }
                     setReturnValue(servers);
                 } catch (SQLException e) {
