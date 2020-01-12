@@ -27,10 +27,11 @@ public class DBServer {
 	private DBShop shop;
 	private int vote;
 	private GameType type;
+	private String voteCmd;
 	
 	public DBServer(int id, String displayName, UUID owner, int port, ArrayList<String> plugins,
 			int players, ServerStatus status, String world, int host, String motd,
-			boolean cmd, boolean visible, String icon, DBShop shop,int vote,GameType type) {
+			boolean cmd, boolean visible, String icon, DBShop shop,int vote,GameType type,String voteCmd) {
 		this.id = id;
 		this.displayName = displayName;
 		this.owner = owner;
@@ -47,6 +48,7 @@ public class DBServer {
 		this.shop = shop;
 		this.vote = vote;
 		this.type = type;
+		this.voteCmd = voteCmd;
 	}
 	
 	public void addVote(int i) {

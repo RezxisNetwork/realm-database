@@ -42,12 +42,13 @@ public class ServersTable extends MySQLStorage {
 		map.put("icon", "text,");
 		map.put("shop", "text,");
 		map.put("vote", "int,");
-		map.put("type", "text");
+		map.put("type", "text,");
+		map.put("voteCmd", "text");
 		createTable(map);
 	}
 	
 	public void insert(DBServer server) {
-        execute(new Insert(insertIntoTable() + " (displayName,owner,plugins,players,port,status,world,host,motd,cmd,visible,icon,shop,vote,type) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        execute(new Insert(insertIntoTable() + " (displayName,owner,plugins,players,port,status,world,host,motd,cmd,visible,icon,shop,vote,type,voteCmd) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 server.getDisplayName(),
                 server.getOwner().toString(),
                 gson.toJson(server.getPlugins()),
@@ -62,7 +63,8 @@ public class ServersTable extends MySQLStorage {
                 server.getIcon(),
                 gson.toJson(server.getShop()),
                 server.getVote(),
-                server.getType().name()) {
+                server.getType().name(),
+                server.getVoteCmd()) {
             @Override
             public void onInsert(List<Integer> integers) {
                 if (!integers.isEmpty())
@@ -97,6 +99,7 @@ public class ServersTable extends MySQLStorage {
                         server.setShop(gson.fromJson(resultSet.getString("shop"), DBShop.class));
                         server.setVote(resultSet.getInt("vote"));
                         server.setType(GameType.valueOf(resultSet.getString("type")));
+                        server.setVoteCmd(resultSet.getString("voteCmd"));
                         setReturnValue(true);
                     } else setReturnValue(false);
                 } catch (SQLException e) {
@@ -141,7 +144,8 @@ public class ServersTable extends MySQLStorage {
 					resultSet.getString("icon"),
 					gson.fromJson(resultSet.getString("shop"), DBShop.class),
 					resultSet.getInt("vote"),
-					GameType.valueOf(resultSet.getString("type")));
+					GameType.valueOf(resultSet.getString("type")),
+					resultSet.getString("voteCmd"));
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -295,9 +299,9 @@ public class ServersTable extends MySQLStorage {
 	}
 	
 	public void update(DBServer server) {
-        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,owner = ?,plugins = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,shop = ?,vote = ?,type = ? WHERE id = ?",
+        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,owner = ?,plugins = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,shop = ?,vote = ?,type = ?, voteCmd = ? WHERE id = ?",
         		server.getDisplayName(),server.getPlayers(), server.getPort(), server.getOwner().toString(),
         		gson.toJson(server.getPlugins()),server.getStatus().name(), server.getWorld(), server.getHost(), 
-        		server.getMotd(), server.isCmd(), server.isVisible(), server.getIcon(), gson.toJson(server.getShop()),server.getVote(),server.getType().name(), server.getId());
+        		server.getMotd(), server.isCmd(), server.isVisible(), server.getIcon(), gson.toJson(server.getShop()),server.getVote(),server.getType().name(),server.getVoteCmd(), server.getId());
     }
 }

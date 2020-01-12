@@ -96,7 +96,7 @@ public class ThirdPartyTable extends MySQLStorage {
     }
 	
 	public DBThirdParty getByUUID(UUID uuid) {
-		return (DBThirdParty) executeQuery(new Query(selectFromTable("*","uuid = ?"),uuid.toString()) {
+		return (DBThirdParty) executeQuery(new Query(selectFromTable("*","owner = ?"),uuid.toString()) {
 			@Override
             protected void onResult(ResultSet resultSet) {
                 try {

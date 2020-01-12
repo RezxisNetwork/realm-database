@@ -106,9 +106,6 @@ public class ServerWrapper {
 			for (DBServer dbs : ServersTable.instance.getOnlineServersVisible()) {
 				list.add(new ServerWrapper(dbs));
 			}
-			if (ThirdPartyTable.getInstance().getOnlineServersVisible() == null) {
-				System.out.println("null!");
-			}
 			for (DBThirdParty dtp : ThirdPartyTable.getInstance().getOnlineServersVisible()) {
 				list.add(new ServerWrapper(dtp));
 			}
