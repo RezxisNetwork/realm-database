@@ -44,7 +44,6 @@ public class PlayersTable extends MySQLStorage {
 	
 	public boolean load(DBPlayer player) {
         return (Boolean) executeQuery(new Query(selectFromTable("*") + " WHERE uuid = ?",player.getUUID().toString()) {
-            @SuppressWarnings("unchecked")
 			@Override
             protected void onResult(ResultSet resultSet) {
                 try {
