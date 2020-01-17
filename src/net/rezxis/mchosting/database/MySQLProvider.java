@@ -16,7 +16,7 @@ public class MySQLProvider {
 		instance = new MySQLProvider();
 	}
 
-	public void addPool(String configName)throws Exception{
+	public void addPool(String configName)throws Exception {
 		String hostname = Database.getHost();
 	    String port = Database.getPort();
 	    String dbname = Database.getName();
