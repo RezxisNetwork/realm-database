@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import net.rezxis.mchosting.database.MySQLStorage;
 import net.rezxis.mchosting.database.object.player.DBPlayer;
 import net.rezxis.mchosting.database.object.player.DBPlayer.Rank;
+import net.rezxis.mchosting.database.object.server.ServerStatus;
 
 public class PlayersTable extends MySQLStorage {
 
@@ -194,6 +195,19 @@ public class PlayersTable extends MySQLStorage {
             }
         });
 		return list;
+	}
+	
+	public int getOnlinePlayers() {
+		return(Integer) executeQuery(new Query(selectFromTable("*","online = true")) {
+            @Override
+            protected void onResult(ResultSet resultSet) {
+                try {
+                	setReturnValue(resultSet.getRow());
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 	}
 	
 	public void addCoin(UUID uuid,int coin) {
