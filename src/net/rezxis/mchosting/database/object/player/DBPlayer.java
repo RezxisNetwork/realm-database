@@ -57,6 +57,12 @@ public class DBPlayer {
 		PlayersTable.instance.update(this);
 	}
 	
+	public boolean isStaff() {
+		if (this.rank == Rank.OWNER || this.rank == Rank.DEVELOPER || this.rank == Rank.STAFF)
+			return true;
+		return false;
+	}
+	
 	public void sync() {
 		PlayersTable.instance.load(this);
 	}
