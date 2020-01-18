@@ -202,7 +202,9 @@ public class PlayersTable extends MySQLStorage {
             @Override
             protected void onResult(ResultSet resultSet) {
                 try {
-                	setReturnValue(resultSet.getRow());
+                	int i = 0;
+                	while (resultSet.next()) {i++;}
+                	setReturnValue(i);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
