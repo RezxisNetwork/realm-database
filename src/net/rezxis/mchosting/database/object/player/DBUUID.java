@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.rezxis.mchosting.database.tables.UuidTable;
 
 @Getter@Setter
 public class DBUUID {
@@ -16,5 +17,9 @@ public class DBUUID {
 		this.id = id;
 		this.name = name;
 		this.uuid = uuid;
+	}
+	
+	public void update() {
+		UuidTable.instnace.update(this);
 	}
 }

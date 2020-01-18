@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 
 import net.rezxis.mchosting.database.MySQLStorage;
 import net.rezxis.mchosting.database.object.player.DBUUID;
+import net.rezxis.mchosting.database.object.server.DBThirdParty;
 
 public class UuidTable extends MySQLStorage {
     public static UuidTable instnace;
@@ -26,6 +27,12 @@ public class UuidTable extends MySQLStorage {
         map.put("uuid", "text");
         createTable(map);
     }
+    
+    public void update(DBUUID db) {
+		execute("UPDATE " + getTable() + " SET name = ?, uuid = ? WHERE id = ?",
+				db.getName(),db.getUuid().toString(),db.getId()
+				);
+	}
     
     public void insert(DBUUID db) {
     	execute(new Insert(insertIntoTable() + " (name,uuid) VALUES (?,?)",
