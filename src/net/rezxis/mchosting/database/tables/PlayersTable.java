@@ -198,7 +198,7 @@ public class PlayersTable extends MySQLStorage {
 	}
 	
 	public int getOnlinePlayers() {
-		return(Integer) executeQuery(new Query(selectFromTable("*","online = true")) {
+		return(Integer) executeQuery(new Query(selectFromTable("*","online = ?"),true) {
             @Override
             protected void onResult(ResultSet resultSet) {
                 try {
