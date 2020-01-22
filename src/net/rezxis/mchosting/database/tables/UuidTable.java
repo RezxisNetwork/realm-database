@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 
 import net.rezxis.mchosting.database.MySQLStorage;
 import net.rezxis.mchosting.database.object.player.DBUUID;
-import net.rezxis.mchosting.database.object.server.DBThirdParty;
 
 public class UuidTable extends MySQLStorage {
     public static UuidTable instnace;

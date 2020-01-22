@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.Setter;
 import net.rezxis.mchosting.database.ColorUtil;
 import net.rezxis.mchosting.database.tables.PlayersTable;
-import net.rezxis.mchosting.database.tables.UuidTable;
 
 @Getter
 @Setter

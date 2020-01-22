@@ -12,7 +12,6 @@ import com.google.gson.Gson;
 import net.rezxis.mchosting.database.MySQLStorage;
 import net.rezxis.mchosting.database.object.player.DBPlayer;
 import net.rezxis.mchosting.database.object.player.DBPlayer.Rank;
-import net.rezxis.mchosting.database.object.server.ServerStatus;
 
 public class PlayersTable extends MySQLStorage {
 
