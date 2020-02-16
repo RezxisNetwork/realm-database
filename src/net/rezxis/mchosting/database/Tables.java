@@ -8,7 +8,6 @@ import net.rezxis.mchosting.database.tables.IPTable;
 import net.rezxis.mchosting.database.tables.PIPTable;
 import net.rezxis.mchosting.database.tables.PlayersTable;
 import net.rezxis.mchosting.database.tables.PluginsTable;
-import net.rezxis.mchosting.database.tables.PunishsTable;
 import net.rezxis.mchosting.database.tables.ServersTable;
 import net.rezxis.mchosting.database.tables.ThirdPartyTable;
 import net.rezxis.mchosting.database.tables.UuidTable;
@@ -35,8 +34,6 @@ public class Tables {
 	private static ThirdPartyTable tTable;
 	@Getter
 	private static UuidTable uTable;
-	@Getter
-	private static PunishsTable phTable;
 	
 	public static void register() {
 		bTable = new BackupsTable();
@@ -49,6 +46,5 @@ public class Tables {
 		sTable = new ServersTable();
 		tTable = new ThirdPartyTable();
 		uTable = new UuidTable();
-		phTable = new PunishsTable();
 	}
 }

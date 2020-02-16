@@ -25,7 +25,6 @@ public class BackupsTable extends MySQLStorage {
         map.put("id", "INT PRIMARY KEY NOT NULL AUTO_INCREMENT,");
         map.put("owner", "text,");
         map.put("name", "text,");
-        map.put("location", "int,");
         map.put("creation", "datetime,");
         map.put("plugins", "text,");
         map.put("shop", "text");
@@ -33,11 +32,10 @@ public class BackupsTable extends MySQLStorage {
     }
     
     public void insert(DBBackup back) {
-    	execute(new Insert(insertIntoTable() + " (owner,name,creation,location,plugins,shop) VALUES (?,?,?,?,?,?)",
+    	execute(new Insert(insertIntoTable() + " (owner,name,creation,plugins,shop) VALUES (?,?,?,?,?,?)",
                 back.getOwner(),
                 back.getName(),
                 back.getCreation(),
-                back.getHost(),
                 gson.toJson(back.getPlugins()),
                 back.getShop()) {
             @Override
@@ -53,10 +51,9 @@ public class BackupsTable extends MySQLStorage {
 	}
     
     public void update(DBBackup obj) {
-        execute("UPDATE " + getTable() + " SET owner = ?, name = ?, location = ?, creation = ?,plugins = ?,shop = ? WHERE id = ?",
+        execute("UPDATE " + getTable() + " SET owner = ?, name = ?, creation = ?,plugins = ?,shop = ? WHERE id = ?",
         		obj.getOwner(),
         		obj.getName(),
-        		obj.getHost(),
         		obj.getCreation(),
         		gson.toJson(obj.getPlugins()),
         		obj.getShop(),
@@ -72,7 +69,6 @@ public class BackupsTable extends MySQLStorage {
                     if(resultSet.next())
                     {
                     	setReturnValue(new DBBackup(resultSet.getInt("id"),
-                    			resultSet.getInt("location"),
                     			resultSet.getString("owner"),
                     			resultSet.getString("name"),
                     			resultSet.getDate("creation"),
@@ -97,7 +93,6 @@ public class BackupsTable extends MySQLStorage {
                     while (resultSet.next())
                     {
                     	arr.add(new DBBackup(resultSet.getInt("id"),
-                    			resultSet.getInt("location"),
                     			owner,
                     			resultSet.getString("name"),
                     			resultSet.getDate("creation"),
