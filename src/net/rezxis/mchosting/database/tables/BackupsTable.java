@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.UUID;
 
 import com.google.gson.Gson;
 
@@ -32,7 +33,7 @@ public class BackupsTable extends MySQLStorage {
     }
     
     public void insert(DBBackup back) {
-    	execute(new Insert(insertIntoTable() + " (owner,name,creation,plugins,shop) VALUES (?,?,?,?,?,?)",
+    	execute(new Insert(insertIntoTable() + " (owner,name,creation,plugins,shop) VALUES (?,?,?,?,?)",
                 back.getOwner(),
                 back.getName(),
                 back.getCreation(),
@@ -94,6 +95,31 @@ public class BackupsTable extends MySQLStorage {
                     {
                     	arr.add(new DBBackup(resultSet.getInt("id"),
                     			owner,
+                    			resultSet.getString("name"),
+                    			resultSet.getDate("creation"),
+                    			gson.fromJson(resultSet.getString("plugins"), ArrayList.class),
+                    			resultSet.getString("shop")));
+                    }
+                    setReturnValue(arr);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+    
+    @SuppressWarnings("unchecked")
+	public ArrayList<DBBackup> getAll() {
+    	return (ArrayList<DBBackup>) executeQuery(new Query(selectFromTable("*")) {
+            @Override
+            protected void onResult(ResultSet resultSet) {
+                try {
+                	ArrayList<DBBackup> arr = new ArrayList<DBBackup>();
+                    setReturnValue(arr);
+                    while (resultSet.next())
+                    {
+                    	arr.add(new DBBackup(resultSet.getInt("id"),
+                    			resultSet.getString("owner"),
                     			resultSet.getString("name"),
                     			resultSet.getDate("creation"),
                     			gson.fromJson(resultSet.getString("plugins"), ArrayList.class),
