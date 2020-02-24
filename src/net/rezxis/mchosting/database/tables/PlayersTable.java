@@ -40,7 +40,7 @@ public class PlayersTable extends MySQLStorage {
 		map.put("prefix", "text,");
 		map.put("vault", "INT,");
 		map.put("verifyCode", "TEXT,");
-		map.put("discordId", "INT");
+		map.put("discordId", "BIGINT");
 		createTable(map);
 	}
 	
