@@ -28,10 +28,12 @@ public class DBPlayer {
 	private Date supporterExpire;
 	private String prefix;
 	private int vault;
+	private String verifyCode;
+	private long discordId;
 	
 	public DBPlayer(int id, UUID uuid, Rank rank, long rc, boolean offline, Date exp,
 			Date nextVote, boolean online, boolean ban, String reason, boolean vpnBypass,
-			boolean isSupporter, Date supporterExpire, String prefix, int vault) {
+			boolean isSupporter, Date supporterExpire, String prefix, int vault, String verifyCode, long discordId) {
 		this.id = id;
 		this.UUID = uuid;
 		this.rank = rank;
@@ -47,6 +49,8 @@ public class DBPlayer {
 		this.supporterExpire = supporterExpire;
 		this.prefix = prefix;
 		this.vault = vault;
+		this.verifyCode = verifyCode;
+		this.discordId = discordId;
 	}
 	
 	public void addCoin(long num) {

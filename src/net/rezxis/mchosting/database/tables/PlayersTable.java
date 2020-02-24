@@ -38,7 +38,9 @@ public class PlayersTable extends MySQLStorage {
 		map.put("support", "boolean,");
 		map.put("suexp", "datetime,");
 		map.put("prefix", "text,");
-		map.put("vault", "INT");
+		map.put("vault", "INT,");
+		map.put("verifyCode", "TEXT,");
+		map.put("discordId", "INT");
 		createTable(map);
 	}
 	
@@ -62,6 +64,8 @@ public class PlayersTable extends MySQLStorage {
                     	player.setSupporterExpire(resultSet.getDate("suexp"));
                     	player.setPrefix(resultSet.getString("prefix"));
                     	player.setVault(resultSet.getInt("vault"));
+                    	player.setVerifyCode(resultSet.getString("verifyCode"));
+                    	player.setDiscordId(resultSet.getLong("discordId"));
                         setReturnValue(true);
                     }else setReturnValue(false);
                 } catch (SQLException e) {
@@ -72,7 +76,7 @@ public class PlayersTable extends MySQLStorage {
     }
 	
 	public void insert(DBPlayer player) {
-        execute(new Insert(insertIntoTable() + " (uuid,rank,coin,ofb,rexp,nvote,online,ban,reason,vpn,support,suexp,prefix,vault) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        execute(new Insert(insertIntoTable() + " (uuid,rank,coin,ofb,rexp,nvote,online,ban,reason,vpn,support,suexp,prefix,vault,verifyCode,discordId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 player.getUUID().toString(),
                 player.getRank().name(),
                 player.getCoin(),
@@ -86,7 +90,9 @@ public class PlayersTable extends MySQLStorage {
                 player.isSupporter(),
                 player.getSupporterExpire(),
                 player.getPrefix(),
-                player.getVault()
+                player.getVault(),
+                player.getVerifyCode(),
+                player.getDiscordId()
         		) {
             @Override
             public void onInsert(List<Integer> integers) {
@@ -104,22 +110,7 @@ public class PlayersTable extends MySQLStorage {
                     //setReturnValue(null);
                     if(resultSet.next())
                     {
-                        setReturnValue(new DBPlayer(resultSet.getInt("id"),
-                        		UUID.fromString(resultSet.getString("uuid")),
-                        		DBPlayer.Rank.valueOf(resultSet.getString("rank")),
-                        		resultSet.getInt("coin"),
-                        		resultSet.getBoolean("ofb"),
-                        		resultSet.getDate("rexp"),
-                        		resultSet.getDate("nvote"),
-                        		resultSet.getBoolean("online"),
-                        		resultSet.getBoolean("ban"),
-                        		resultSet.getString("reason"),
-                        		resultSet.getBoolean("vpn"),
-                        		resultSet.getBoolean("support"),
-                        		resultSet.getDate("suexp"),
-                        		resultSet.getString("prefix"),
-                        		resultSet.getInt("vault")
-                        		));
+                        setReturnValue(convert(resultSet));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -136,22 +127,7 @@ public class PlayersTable extends MySQLStorage {
                     //setReturnValue(null);
                     if(resultSet.next())
                     {
-                        setReturnValue(new DBPlayer(resultSet.getInt("id"),
-                        		uuid,
-                        		DBPlayer.Rank.valueOf(resultSet.getString("rank")),
-                        		resultSet.getInt("coin"),
-                        		resultSet.getBoolean("ofb"),
-                        		resultSet.getDate("rexp"),
-                        		resultSet.getDate("nvote"),
-                        		resultSet.getBoolean("online"),
-                        		resultSet.getBoolean("ban"),
-                        		resultSet.getString("reason"),
-                        		resultSet.getBoolean("vpn"),
-                        		resultSet.getBoolean("support"),
-                        		resultSet.getDate("suexp"),
-                        		resultSet.getString("prefix"),
-                        		resultSet.getInt("vault")
-                        		));
+                        setReturnValue(convert(resultSet));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -159,6 +135,67 @@ public class PlayersTable extends MySQLStorage {
             }
         });
     }
+	
+	public DBPlayer getByVerfiyKey(String key) {
+        return (DBPlayer) executeQuery(new Query(selectFromTable("*","verifyCode = ?"),key) {
+            @Override
+            protected void onResult(ResultSet resultSet) {
+                try {
+                    //setReturnValue(null);
+                    if(resultSet.next())
+                    {
+                        setReturnValue(convert(resultSet));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+	
+	public DBPlayer getByDiscordId(long id) {
+        return (DBPlayer) executeQuery(new Query(selectFromTable("*","discordId = ?"),id) {
+            @Override
+            protected void onResult(ResultSet resultSet) {
+                try {
+                    //setReturnValue(null);
+                    if(resultSet.next())
+                    {
+                        setReturnValue(convert(resultSet));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+	
+	public DBPlayer convert(ResultSet resultSet) {
+		try {
+			return new DBPlayer(resultSet.getInt("id"),
+					UUID.fromString(resultSet.getString("uuid")),
+					DBPlayer.Rank.valueOf(resultSet.getString("rank")),
+					resultSet.getInt("coin"),
+					resultSet.getBoolean("ofb"),
+					resultSet.getDate("rexp"),
+					resultSet.getDate("nvote"),
+					resultSet.getBoolean("online"),
+					resultSet.getBoolean("ban"),
+					resultSet.getString("reason"),
+					resultSet.getBoolean("vpn"),
+					resultSet.getBoolean("support"),
+					resultSet.getDate("suexp"),
+					resultSet.getString("prefix"),
+					resultSet.getInt("vault"),
+					resultSet.getString("verifyCode"),
+					resultSet.getLong("discordId")
+					);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	public ArrayList<DBPlayer> ofbPlayers() {
 		@SuppressWarnings("unchecked")
@@ -170,22 +207,7 @@ public class PlayersTable extends MySQLStorage {
                     setReturnValue(arr);
                     while (resultSet.next())
                     {
-                    	arr.add(new DBPlayer(resultSet.getInt("id"),
-                        		UUID.fromString(resultSet.getString("uuid")),
-                        		DBPlayer.Rank.valueOf(resultSet.getString("rank")),
-                        		resultSet.getInt("coin"),
-                        		true,
-                        		resultSet.getDate("rexp"),
-                        		resultSet.getDate("nvote"),
-                        		resultSet.getBoolean("online"),
-                        		resultSet.getBoolean("ban"),
-                        		resultSet.getString("reason"),
-                        		resultSet.getBoolean("vpn"),
-                        		resultSet.getBoolean("support"),
-                        		resultSet.getDate("suexp"),
-                        		resultSet.getString("prefix"),
-                        		resultSet.getInt("vault")
-                        		));
+                    	arr.add(convert(resultSet));
                     }
                     setReturnValue(arr);
                 } catch (SQLException e) {
@@ -216,7 +238,7 @@ public class PlayersTable extends MySQLStorage {
 	}
 	
 	public void update(DBPlayer player) {
-        execute("UPDATE " + getTable() + " SET uuid = ?, rank = ?, coin = ?,ofb = ?,rexp = ?,nvote = ?,online = ?,ban = ?, reason = ?, vpn = ?, support = ?, suexp = ?, prefix = ?,vault = ? WHERE id = ?",
+        execute("UPDATE " + getTable() + " SET uuid = ?, rank = ?, coin = ?,ofb = ?,rexp = ?,nvote = ?,online = ?,ban = ?, reason = ?, vpn = ?, support = ?, suexp = ?, prefix = ?,vault = ?, verifyCode = ?, discordId = ? WHERE id = ?",
         		player.getUUID().toString(),
         		player.getRank().name(),
         		player.getCoin(),
@@ -231,6 +253,8 @@ public class PlayersTable extends MySQLStorage {
         		player.getSupporterExpire(),
         		player.getPrefix(),
         		player.getVault(),
+        		player.getVerifyCode(),
+        		player.getDiscordId(),
         		player.getId());
     }
 }
