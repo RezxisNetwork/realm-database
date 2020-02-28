@@ -43,7 +43,7 @@ public class ServersTable extends MySQLStorage {
 		map.put("shop", "text,");
 		map.put("vote", "int,");
 		map.put("type", "text,");
-		map.put("voteCmd", "text");
+		map.put("voteCmd", "text,");
 		map.put("resource", "text");
 		createTable(map);
 	}
