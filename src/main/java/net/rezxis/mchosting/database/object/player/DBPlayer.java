@@ -81,8 +81,8 @@ public class DBPlayer {
 	
 	public boolean isExpiredSupporter() {
 		if (!isSupporter)
-			return false;
-		if (supporterExpire.before(new Date()))
+			return true;
+		if (new Date().after(supporterExpire))
 			return true;
 		return false;
 	}

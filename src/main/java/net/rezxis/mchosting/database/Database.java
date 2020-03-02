@@ -35,6 +35,7 @@ public class Database {
 		}
 		System.out.println("Database was initialized.");
 		Tables.register();
+		AnniTables.register();
 	}
 	
 	public static void init(String h,String u,String p,String po,String n) {
