@@ -10,15 +10,13 @@ import net.rezxis.mchosting.database.tables.FilesTable;
 @Setter
 public class DBFile {
 
-	private String name;
 	private String UUID;
 	private String secret;
 	private boolean uploaded;
 	private Date time;
 	private Type type;
 	
-	public DBFile(String name, String uuid, String secret, boolean uploaded, Date time, Type type) {
-		this.name = name;
+	public DBFile(String uuid, String secret, boolean uploaded, Date time, Type type) {
 		this.UUID = uuid;
 		this.secret = secret;
 		this.uploaded = uploaded;

@@ -22,7 +22,6 @@ public class FilesTable extends MySQLStorage{
 		map.put("uuid", "text,");
 		map.put("secret", "text,");
 		map.put("uploaded", "boolean,");
-		map.put("name", "text,");
 		map.put("time", "datetime,");
 		map.put("type", "text");
 		createTable(map);
@@ -37,8 +36,7 @@ public class FilesTable extends MySQLStorage{
                     if(resultSet.next())
                     {
                         setReturnValue(
-                        		new DBFile(resultSet.getString("name"),
-                        		resultSet.getString("uuid"),
+                        		new DBFile(resultSet.getString("uuid"),
                         		resultSet.getString("secret"),
                         		resultSet.getBoolean("uploaded"),
                         		resultSet.getDate("time"),
@@ -61,8 +59,7 @@ public class FilesTable extends MySQLStorage{
                     if(resultSet.next())
                     {
                         setReturnValue(
-                        		new DBFile(resultSet.getString("name"),
-                        		resultSet.getString("uuid"),
+                        		new DBFile(resultSet.getString("uuid"),
                         		resultSet.getString("secret"),
                         		resultSet.getBoolean("uploaded"),
                         		resultSet.getDate("time"),
@@ -95,11 +92,10 @@ public class FilesTable extends MySQLStorage{
 	}
 	
 	public void insert(DBFile file) {
-		execute(new Insert(insertIntoTable() + " (uuid,secret,uploaded,name,time,type) VALUES (?,?,?,?,?,?)",
+		execute(new Insert(insertIntoTable() + " (uuid,secret,uploaded,time,type) VALUES (?,?,?,?,?)",
                 file.getUUID(),
                 file.getSecret(),
                 file.isUploaded(),
-                file.getName(),
                 file.getTime(),
                 file.getType().name()
         		) {
