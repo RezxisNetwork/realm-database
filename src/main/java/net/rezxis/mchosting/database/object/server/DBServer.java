@@ -16,6 +16,7 @@ public class DBServer {
 	private String displayName;
 	private UUID owner;
 	private int port;
+	private String ip;
 	private int players;
 	private ServerStatus status;
 	private String world;
@@ -30,13 +31,14 @@ public class DBServer {
 	private String voteCmd;
 	private String resource;
 	
-	public DBServer(int id, String displayName, UUID owner, int port, ArrayList<String> plugins,
+	public DBServer(int id, String displayName, UUID owner, int port, String ip, ArrayList<String> plugins,
 			int players, ServerStatus status, String world, int host, String motd,
 			boolean cmd, boolean visible, String icon, DBShop shop,int vote,GameType type,String voteCmd,String resource) {
 		this.id = id;
 		this.displayName = displayName;
 		this.owner = owner;
 		this.port = port;
+		this.ip = ip;
 		this.plugins = plugins;
 		this.players = players;
 		this.status = status;

@@ -44,12 +44,13 @@ public class ServersTable extends MySQLStorage {
 		map.put("vote", "int,");
 		map.put("type", "text,");
 		map.put("voteCmd", "text,");
-		map.put("resource", "text");
+		map.put("resource", "text,");
+		map.put("ip", "text");
 		createTable(map);
 	}
 	
 	public void insert(DBServer server) {
-        execute(new Insert(insertIntoTable() + " (displayName,owner,plugins,players,port,status,world,host,motd,cmd,visible,icon,shop,vote,type,voteCmd,resource) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        execute(new Insert(insertIntoTable() + " (displayName,owner,plugins,players,port,status,world,host,motd,cmd,visible,icon,shop,vote,type,voteCmd,resource,ip) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 server.getDisplayName(),
                 server.getOwner().toString(),
                 gson.toJson(server.getPlugins()),
@@ -66,7 +67,8 @@ public class ServersTable extends MySQLStorage {
                 server.getVote(),
                 server.getType().name(),
                 server.getVoteCmd(),
-                server.getResource()) {
+                server.getResource(),
+                server.getIp()) {
             @Override
             public void onInsert(List<Integer> integers) {
                 if (!integers.isEmpty())
@@ -103,6 +105,7 @@ public class ServersTable extends MySQLStorage {
                         server.setType(GameType.valueOf(resultSet.getString("type")));
                         server.setVoteCmd(resultSet.getString("voteCmd"));
                         server.setResource(resultSet.getString("resource"));
+                        server.setIp(resultSet.getString("ip"));
                         setReturnValue(true);
                     } else setReturnValue(false);
                 } catch (SQLException e) {
@@ -136,6 +139,7 @@ public class ServersTable extends MySQLStorage {
 					resultSet.getString("displayName"),
 					UUID.fromString(resultSet.getString("owner")),
 					resultSet.getInt("port"),
+					resultSet.getString("ip"),
 					gson.fromJson(resultSet.getString("plugins"),ArrayList.class),
 					resultSet.getInt("players"),
 					ServerStatus.valueOf(resultSet.getString("status")),
@@ -303,8 +307,8 @@ public class ServersTable extends MySQLStorage {
 	}
 	
 	public void update(DBServer server) {
-        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,owner = ?,plugins = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,shop = ?,vote = ?,type = ?, voteCmd = ?, resource = ? WHERE id = ?",
-        		server.getDisplayName(),server.getPlayers(), server.getPort(), server.getOwner().toString(),
+        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,ip = ?,owner = ?,plugins = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,shop = ?,vote = ?,type = ?, voteCmd = ?, resource = ? WHERE id = ?",
+        		server.getDisplayName(),server.getPlayers(), server.getPort(), server.getIp(), server.getOwner().toString(),
         		gson.toJson(server.getPlugins()),server.getStatus().name(), server.getWorld(), server.getHost(), 
         		server.getMotd(), server.isCmd(), server.isVisible(), server.getIcon(), gson.toJson(server.getShop()),
         		server.getVote(),server.getType().name(),server.getVoteCmd(), server.getResource(), server.getId());
