@@ -11,6 +11,8 @@ import net.rezxis.mchosting.database.tables.PluginsTable;
 import net.rezxis.mchosting.database.tables.ServersTable;
 import net.rezxis.mchosting.database.tables.ThirdPartyTable;
 import net.rezxis.mchosting.database.tables.UuidTable;
+import net.rezxis.mchosting.database.tables.VoteTable;
+
 
 public class Tables {
 
@@ -34,6 +36,8 @@ public class Tables {
 	private static ThirdPartyTable tTable;
 	@Getter
 	private static UuidTable uTable;
+	@Getter
+	private static VoteTable vTable;
 	
 	public static void register() {
 		bTable = new BackupsTable();
@@ -46,5 +50,6 @@ public class Tables {
 		sTable = new ServersTable();
 		tTable = new ThirdPartyTable();
 		uTable = new UuidTable();
+		vTable = new VoteTable();
 	}
 }

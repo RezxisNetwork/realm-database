@@ -83,6 +83,22 @@ public class ServerWrapper {
 		}
 	}
 	
+	public String getAddress() {
+		if (isDBServer())  {
+			return getDBServer().getIp();
+		} else {
+			return getDBThirdParty().getHost();
+		}
+	}
+	
+	public int getPort() {
+		if (isDBServer()) {
+			return getDBServer().getPort();
+		} else {
+			return getDBThirdParty().getPort();
+		}
+	}
+	
 	public static ServerWrapper getServerByName(String name) {
 		DBThirdParty dtp = Tables.getTTable().getByName(name);
 		if (dtp != null)
@@ -110,10 +126,12 @@ public class ServerWrapper {
 				list.add(new ServerWrapper(dtp));
 			}
 		}
-		if (sort.equalsIgnoreCase("players")) {
-			Collections.sort(list, new PlayersSort());
-		} else {
-			Collections.sort(list, new ScoresSort());
+		if (sort != null) {
+			if (sort.equalsIgnoreCase("players")) {
+				Collections.sort(list, new PlayersSort());
+			} else {
+				Collections.sort(list, new ScoresSort());
+			}
 		}
 		
 		if (all) {
