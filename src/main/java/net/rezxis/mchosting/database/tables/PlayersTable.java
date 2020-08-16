@@ -54,14 +54,14 @@ public class PlayersTable extends MySQLStorage {
                     	player.setRank(Rank.valueOf(resultSet.getString("rank")));
                     	player.setCoin(resultSet.getInt("coin"));
                     	player.setOfflineBoot(resultSet.getBoolean("ofb"));
-                    	player.setRankExpire(resultSet.getDate("rexp"));
-                    	player.setNextVote(resultSet.getDate("nvote"));
+                    	player.setRankExpire(resultSet.getTimestamp("rexp"));
+                    	player.setNextVote(resultSet.getTimestamp("nvote"));
                     	player.setOnline(resultSet.getBoolean("online"));
                     	player.setBan(resultSet.getBoolean("ban"));
                     	player.setReason(resultSet.getString("reason"));
                     	player.setVpnBypass(resultSet.getBoolean("vpn"));
                     	player.setSupporter(resultSet.getBoolean("support"));
-                    	player.setSupporterExpire(resultSet.getDate("suexp"));
+                    	player.setSupporterExpire(resultSet.getTimestamp("suexp"));
                     	player.setPrefix(resultSet.getString("prefix"));
                     	player.setVault(resultSet.getInt("vault"));
                     	player.setVerifyCode(resultSet.getString("verifyCode"));
@@ -177,14 +177,14 @@ public class PlayersTable extends MySQLStorage {
 					DBPlayer.Rank.valueOf(resultSet.getString("rank")),
 					resultSet.getInt("coin"),
 					resultSet.getBoolean("ofb"),
-					resultSet.getDate("rexp"),
-					resultSet.getDate("nvote"),
+					resultSet.getTimestamp("rexp"),
+					resultSet.getTimestamp("nvote"),
 					resultSet.getBoolean("online"),
 					resultSet.getBoolean("ban"),
 					resultSet.getString("reason"),
 					resultSet.getBoolean("vpn"),
 					resultSet.getBoolean("support"),
-					resultSet.getDate("suexp"),
+					resultSet.getTimestamp("suexp"),
 					resultSet.getString("prefix"),
 					resultSet.getInt("vault"),
 					resultSet.getString("verifyCode"),

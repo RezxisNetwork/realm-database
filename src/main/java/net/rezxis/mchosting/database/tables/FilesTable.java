@@ -39,7 +39,7 @@ public class FilesTable extends MySQLStorage{
                         		new DBFile(resultSet.getString("uuid"),
                         		resultSet.getString("secret"),
                         		resultSet.getBoolean("uploaded"),
-                        		resultSet.getDate("time"),
+                        		resultSet.getTimestamp("time"),
                         		Type.valueOf(resultSet.getString("type")))
                         		);
                     }
@@ -62,7 +62,7 @@ public class FilesTable extends MySQLStorage{
                         		new DBFile(resultSet.getString("uuid"),
                         		resultSet.getString("secret"),
                         		resultSet.getBoolean("uploaded"),
-                        		resultSet.getDate("time"),
+                        		resultSet.getTimestamp("time"),
                         		Type.valueOf(resultSet.getString("type")))
                         		);
                     }
@@ -81,7 +81,7 @@ public class FilesTable extends MySQLStorage{
                     setReturnValue(null);
                     if(resultSet.next())
                     {
-                        file.setTime(resultSet.getDate("time"));
+                        file.setTime(resultSet.getTimestamp("time"));
                         file.setUploaded(resultSet.getBoolean("uploaded"));
                     }
                 } catch (SQLException e) {

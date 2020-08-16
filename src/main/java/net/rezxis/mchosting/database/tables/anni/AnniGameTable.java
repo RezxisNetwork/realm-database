@@ -70,7 +70,7 @@ public class AnniGameTable extends MySQLStorage {
 	                    						resultSet.getString("line2"),
 	                    						resultSet.getString("line3"),
 	                    						resultSet.getString("line4"),
-	                    						resultSet.getDate("lastUpdated"))
+	                    						resultSet.getTimestamp("lastUpdated"))
 	                    				);
 	                    	}
 	                    	setReturnValue(map);

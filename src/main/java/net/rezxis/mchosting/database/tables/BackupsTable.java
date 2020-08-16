@@ -71,7 +71,7 @@ public class BackupsTable extends MySQLStorage {
                     	setReturnValue(new DBBackup(resultSet.getInt("id"),
                     			resultSet.getString("owner"),
                     			resultSet.getString("name"),
-                    			resultSet.getDate("creation"),
+                    			resultSet.getTimestamp("creation"),
                     			gson.fromJson(resultSet.getString("plugins"), ArrayList.class),
                     			resultSet.getString("shop")));
                     }
@@ -95,7 +95,7 @@ public class BackupsTable extends MySQLStorage {
                     	arr.add(new DBBackup(resultSet.getInt("id"),
                     			owner,
                     			resultSet.getString("name"),
-                    			resultSet.getDate("creation"),
+                    			resultSet.getTimestamp("creation"),
                     			gson.fromJson(resultSet.getString("plugins"), ArrayList.class),
                     			resultSet.getString("shop")));
                     }
@@ -120,7 +120,7 @@ public class BackupsTable extends MySQLStorage {
                     	arr.add(new DBBackup(resultSet.getInt("id"),
                     			resultSet.getString("owner"),
                     			resultSet.getString("name"),
-                    			resultSet.getDate("creation"),
+                    			resultSet.getTimestamp("creation"),
                     			gson.fromJson(resultSet.getString("plugins"), ArrayList.class),
                     			resultSet.getString("shop")));
                     }

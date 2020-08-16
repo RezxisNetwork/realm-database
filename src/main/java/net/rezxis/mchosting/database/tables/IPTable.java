@@ -58,7 +58,7 @@ public class IPTable extends MySQLStorage {
                     			ip,
                     			resultSet.getBoolean("banned"),
                     			resultSet.getString("reason"),
-                    			resultSet.getDate("lastUpdate")));
+                    			resultSet.getTimestamp("lastUpdate")));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -78,7 +78,7 @@ public class IPTable extends MySQLStorage {
                     			resultSet.getString("ip"),
                     			resultSet.getBoolean("banned"),
                     			resultSet.getString("reason"),
-                    			resultSet.getDate("lastUpdate")));
+                    			resultSet.getTimestamp("lastUpdate")));
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();

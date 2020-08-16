@@ -50,7 +50,7 @@ public class ThirdPartyTable extends MySQLStorage {
                     	p.setKey(resultSet.getString("token"));
                     	p.setOwner(UUID.fromString(resultSet.getString("owner")));
                     	p.setLocked(resultSet.getBoolean("locked"));
-                    	p.setExpire(resultSet.getDate("expire"));
+                    	p.setExpire(resultSet.getTimestamp("expire"));
                     	p.setOnline(resultSet.getBoolean("online"));
                     	p.setHost(resultSet.getString("host"));
                     	p.setPort(resultSet.getInt("port"));
@@ -213,7 +213,7 @@ public class ThirdPartyTable extends MySQLStorage {
 					UUID.fromString(resultSet.getString("owner")),
 					resultSet.getBoolean("online"),
 					resultSet.getBoolean("locked"),
-					resultSet.getDate("expire"),
+					resultSet.getTimestamp("expire"),
 					resultSet.getString("host"),
 					resultSet.getInt("port"),
 					resultSet.getInt("players"),
