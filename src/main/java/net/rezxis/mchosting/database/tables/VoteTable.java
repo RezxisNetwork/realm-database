@@ -32,7 +32,7 @@ public class VoteTable extends MySQLStorage {
 
     public void insert(DBVote vote) {
     	execute(new Insert(insertIntoTable() + " (uuid,streak,total,lastVote,rank) VALUES (?,?,?,?,?)",
-                vote.getUuid(),
+                vote.getUuid().toString(),
                 vote.getStreak(),
                 vote.getTotal(),
                 vote.getLastVote(),
