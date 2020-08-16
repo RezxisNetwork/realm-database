@@ -92,7 +92,7 @@ public class VoteTable extends MySQLStorage {
     			,UUID.fromString(rs.getString("uuid"))
     			,rs.getInt("streak")
     			,rs.getInt("total")
-    			,rs.getDate("lastvote")
-    			,rs.getDate("rank"));
+    			,rs.getTimestamp("lastvote")
+    			,rs.getTimestamp("rank"));
     }
 }
