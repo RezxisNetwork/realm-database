@@ -35,7 +35,8 @@ public class VoteTable extends MySQLStorage {
                 vote.getUuid(),
                 vote.getStreak(),
                 vote.getTotal(),
-                vote.getLastVote()) {
+                vote.getLastVote(),
+                vote.getRank()) {
             @Override
             public void onInsert(List<Integer> keys) {
             	if (!keys.isEmpty())
