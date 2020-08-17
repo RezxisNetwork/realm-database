@@ -99,7 +99,7 @@ public class DBPlayer {
 	
 	public enum Rank {
 		
-		NORMAL("","1G",20,2,false,false),
+		NORMAL("","2G",20,2,false,false),
 		DEVELOPER(ColorUtil.COLOR_CHAR+"5[DEVELOPER]","4G",40,5,true,true),STAFF(ColorUtil.COLOR_CHAR+"2[STAFF]","4G",40,5,true,false)
 		,SPECIAL(ColorUtil.COLOR_CHAR+"d[SPECIAL]","4G",40,5,true,false),OWNER(ColorUtil.COLOR_CHAR+"6[OWNER]","4G",40,5,true,true)
 		,GOLD(ColorUtil.COLOR_CHAR+"6[GOLD]","2G",25,3,true,false),DIAMOND(ColorUtil.COLOR_CHAR+"3[DIAMOND]","3G",30,4,true,false)
