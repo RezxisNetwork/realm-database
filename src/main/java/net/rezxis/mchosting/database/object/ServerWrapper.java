@@ -109,7 +109,7 @@ public class ServerWrapper {
 		return null;
 	}
 	
-	public static ArrayList<ServerWrapper> getServers(boolean all, String sort) {
+	public static ArrayList<ServerWrapper> getServers(boolean all, String sort, boolean ofbs) {
 		ArrayList<ServerWrapper> list = new ArrayList<>();
 		if (all) {
 			for (DBServer dbs : ServersTable.instance.getOnlineServers()) {
@@ -134,7 +134,7 @@ public class ServerWrapper {
 			}
 		}
 		
-		if (all) {
+		if (all && ofbs) {
 			ArrayList<DBPlayer> ofb = PlayersTable.instance.ofbPlayers();
 			for (DBPlayer dpp : ofb) {
 				if (!dpp.isExpiredRank()) {
