@@ -1,14 +1,13 @@
 package net.rezxis.mchosting.database;
 
 import lombok.Getter;
-import net.rezxis.mchosting.database.tables.anni.AnniGameTable;
+import net.rezxis.mchosting.database.tables.anni.RezxisPlayerTable;
 
 public class AnniTables {
 
-	@Getter
-	private static AnniGameTable ATable;
+	@Getter private static RezxisPlayerTable rezxisPlayerTable;
 	
 	public static void register() {
-		ATable = new AnniGameTable();
+		rezxisPlayerTable = new RezxisPlayerTable();
 	}
 }

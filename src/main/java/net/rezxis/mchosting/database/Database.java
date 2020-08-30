@@ -1,6 +1,7 @@
 package net.rezxis.mchosting.database;
 
 import lombok.Getter;
+import lombok.Setter;
 
 public class Database {
 
@@ -14,8 +15,13 @@ public class Database {
 	private static String port;
 	@Getter
 	private static String name;
+	@Getter@Setter
+	private static boolean set = false;
 	
 	public static void init(String h,String u,String p,String po,String n, boolean hook) {
+		if (set) {
+			BukkitVars.init();
+		}
 		host = h;
 		user = u;
 		pass = p;
@@ -40,5 +46,9 @@ public class Database {
 	
 	public static void init(String h,String u,String p,String po,String n) {
 		init(h,u,p,po,n,true);
+	}
+	
+	public static void init(String h,String u,String p,int po,String n) {
+		init(h,u,p,String.valueOf(po),n,true);
 	}
 }
