@@ -30,10 +30,12 @@ public class DBPlayer {
 	private int vault;
 	private String verifyCode;
 	private long discordId;
+	private String pterodactyl;
 	
 	public DBPlayer(int id, UUID uuid, Rank rank, long rc, boolean offline, Date exp,
 			Date nextVote, boolean online, boolean ban, String reason, boolean vpnBypass,
-			boolean isSupporter, Date supporterExpire, String prefix, int vault, String verifyCode, long discordId) {
+			boolean isSupporter, Date supporterExpire, String prefix, int vault, String verifyCode, long discordId,
+			String pterodactyl) {
 		this.id = id;
 		this.UUID = uuid;
 		this.rank = rank;
@@ -51,6 +53,7 @@ public class DBPlayer {
 		this.vault = vault;
 		this.verifyCode = verifyCode;
 		this.discordId = discordId;
+		this.pterodactyl = pterodactyl;
 	}
 	
 	public void addCoin(long num) {

@@ -40,7 +40,8 @@ public class PlayersTable extends MySQLStorage {
 		map.put("prefix", "text,");
 		map.put("vault", "INT,");
 		map.put("verifyCode", "TEXT,");
-		map.put("discordId", "BIGINT");
+		map.put("discordId", "BIGINT,");
+		map.put("pterodactyl", "TEXT");
 		createTable(map);
 	}
 	
@@ -66,6 +67,7 @@ public class PlayersTable extends MySQLStorage {
                     	player.setVault(resultSet.getInt("vault"));
                     	player.setVerifyCode(resultSet.getString("verifyCode"));
                     	player.setDiscordId(resultSet.getLong("discordId"));
+                    	player.setPterodactyl(resultSet.getString("pterodactyl"));
                         setReturnValue(true);
                     }else setReturnValue(false);
                 } catch (SQLException e) {
@@ -76,7 +78,7 @@ public class PlayersTable extends MySQLStorage {
     }
 	
 	public void insert(DBPlayer player) {
-        execute(new Insert(insertIntoTable() + " (uuid,rank,coin,ofb,rexp,nvote,online,ban,reason,vpn,support,suexp,prefix,vault,verifyCode,discordId) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        execute(new Insert(insertIntoTable() + " (uuid,rank,coin,ofb,rexp,nvote,online,ban,reason,vpn,support,suexp,prefix,vault,verifyCode,discordId,pterodactyl) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 player.getUUID().toString(),
                 player.getRank().name(),
                 player.getCoin(),
@@ -92,7 +94,8 @@ public class PlayersTable extends MySQLStorage {
                 player.getPrefix(),
                 player.getVault(),
                 player.getVerifyCode(),
-                player.getDiscordId()
+                player.getDiscordId(),
+                player.getPterodactyl()
         		) {
             @Override
             public void onInsert(List<Integer> integers) {
@@ -188,7 +191,8 @@ public class PlayersTable extends MySQLStorage {
 					resultSet.getString("prefix"),
 					resultSet.getInt("vault"),
 					resultSet.getString("verifyCode"),
-					resultSet.getLong("discordId")
+					resultSet.getLong("discordId"),
+					resultSet.getString("pterodactyl")
 					);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -238,7 +242,7 @@ public class PlayersTable extends MySQLStorage {
 	}
 	
 	public void update(DBPlayer player) {
-        execute("UPDATE " + getTable() + " SET uuid = ?, rank = ?, coin = ?,ofb = ?,rexp = ?,nvote = ?,online = ?,ban = ?, reason = ?, vpn = ?, support = ?, suexp = ?, prefix = ?,vault = ?, verifyCode = ?, discordId = ? WHERE id = ?",
+        execute("UPDATE " + getTable() + " SET uuid = ?, rank = ?, coin = ?,ofb = ?,rexp = ?,nvote = ?,online = ?,ban = ?, reason = ?, vpn = ?, support = ?, suexp = ?, prefix = ?,vault = ?, verifyCode = ?, discordId = ?, pterodactyl = ? WHERE id = ?",
         		player.getUUID().toString(),
         		player.getRank().name(),
         		player.getCoin(),
@@ -255,6 +259,7 @@ public class PlayersTable extends MySQLStorage {
         		player.getVault(),
         		player.getVerifyCode(),
         		player.getDiscordId(),
+        		player.getPterodactyl(),
         		player.getId());
     }
 }
