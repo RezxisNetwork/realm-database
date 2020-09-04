@@ -92,7 +92,7 @@ public class RezxisHostTable extends MySQLStorage {
             protected void onResult(ResultSet resultSet) {
             	ArrayList<HostName> list = new ArrayList<>();
                 try {
-                    if(resultSet.next())
+                    while (resultSet.next())
                        	list.add(new HostName(resultSet.getInt("id"), resultSet.getString("host"), resultSet.getString("dest"), resultSet.getBoolean("ping")));
                 } catch (SQLException e) {
                     e.printStackTrace();
