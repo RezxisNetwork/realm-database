@@ -25,8 +25,7 @@ public class RezxisKVTable extends MySQLStorage {
     }
     
     public void insert(KeyValue kv) {
-    	execute(new Insert(insertIntoTable() + " (id,keyx,value) VALUES (?,?,?)",
-                kv.getId(),
+    	execute(new Insert(insertIntoTable() + " (keyx,value) VALUES (?,?)",
                 kv.getKey(),
                 kv.getValue()) {
             @Override
