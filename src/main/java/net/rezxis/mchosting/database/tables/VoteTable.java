@@ -7,6 +7,7 @@ import net.rezxis.mchosting.database.object.player.DBVote;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
@@ -53,6 +54,25 @@ public class VoteTable extends MySQLStorage {
         		obj.getLastVote(),
         		obj.getRank(),
         		obj.getId());
+    }
+    
+    @SuppressWarnings("unchecked")
+	public ArrayList<DBVote> getVoteWithLimit(int limit) {
+    	return (ArrayList<DBVote>) executeQuery(new Query("SELECT * FROM `rezxis_votes` ORDER BY `rezxis_votes`.`total` DESC LIMIT ?",limit) {
+			@Override
+            protected void onResult(ResultSet resultSet) {
+				ArrayList<DBVote> list = new ArrayList<>();
+                try {
+                    while (resultSet.next())
+                    {
+                    	list.add(parse(resultSet));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                setReturnValue(list);
+            }
+        });
     }
     
     public DBVote getVoteByID(int id) {
