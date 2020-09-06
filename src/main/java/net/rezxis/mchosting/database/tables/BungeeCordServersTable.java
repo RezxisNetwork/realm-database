@@ -24,7 +24,7 @@ public class BungeeCordServersTable extends MySQLStorage {
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
         map.put("id", "INT PRIMARY KEY NOT NULL AUTO_INCREMENT,");
         map.put("name", "text,");
-        map.put("motd", "test,");
+        map.put("motd", "text,");
         map.put("address", "text,");
         map.put("port", "int,");
         map.put("restricted", "boolean");
