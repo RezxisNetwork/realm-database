@@ -26,7 +26,7 @@ public class BungeeCordServersTable extends MySQLStorage {
         map.put("name", "text,");
         map.put("motd", "test,");
         map.put("address", "text,");
-        map.put("port", ",int,");
+        map.put("port", "int,");
         map.put("restricted", "boolean");
         createTable(map);
     }
