@@ -2,6 +2,7 @@ package net.rezxis.mchosting.database;
 
 import lombok.Getter;
 import net.rezxis.mchosting.database.tables.BackupsTable;
+import net.rezxis.mchosting.database.tables.BungeeCordServersTable;
 import net.rezxis.mchosting.database.tables.CrateTable;
 import net.rezxis.mchosting.database.tables.FilesTable;
 import net.rezxis.mchosting.database.tables.IPTable;
@@ -31,6 +32,7 @@ public class Tables {
 	@Getter private static VoteTable vTable;
 	@Getter private static RezxisKVTable rezxisKVTable;
 	@Getter private static RezxisHostTable rezxisHostTable;
+	@Getter private static BungeeCordServersTable bungeeCordServersTable;
 	
 	public static void register() {
 		bTable = new BackupsTable();
@@ -46,5 +48,6 @@ public class Tables {
 		vTable = new VoteTable();
 		rezxisKVTable = new RezxisKVTable();
 		rezxisHostTable = new RezxisHostTable();
+		bungeeCordServersTable = new BungeeCordServersTable();
 	}
 }

@@ -31,6 +31,6 @@ public class DBVote {
 	}
 	
 	public void update() {
-		Tables.getVTable().instnace.update(this);
+		Tables.getVTable().update(this);
 	}
 }
