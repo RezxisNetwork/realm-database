@@ -1,7 +1,10 @@
 package net.rezxis.mchosting.database.object.player;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import lombok.Getter;
@@ -79,13 +82,13 @@ public class DBPlayer {
 			return false;
 		if (ignore.contains(this.rank))
 			return false;
-		return this.RankExpire.before(new Date());
+		return this.RankExpire.before(Calendar.getInstance(TimeZone.getTimeZone("Japan"),Locale.JAPANESE).getTime());
 	}
 	
 	public boolean isExpiredSupporter() {
 		if (!isSupporter)
 			return true;
-		if (new Date().after(supporterExpire))
+		if (Calendar.getInstance(TimeZone.getTimeZone("Japan"),Locale.JAPANESE).getTime().after(supporterExpire))
 			return true;
 		return false;
 	}
