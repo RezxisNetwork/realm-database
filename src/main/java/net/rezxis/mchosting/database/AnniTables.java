@@ -10,4 +10,5 @@ public class AnniTables {
 	public static void register() {
 		rezxisPlayerTable = new RezxisPlayerTable();
 	}
+	
 }
