@@ -45,12 +45,13 @@ public class ServersTable extends MySQLStorage {
 		map.put("type", "text,");
 		map.put("voteCmd", "text,");
 		map.put("resource", "text,");
-		map.put("ip", "text");
+		map.put("ip", "text,");
+		map.put("direct", "text");
 		createTable(map);
 	}
 	
 	public void insert(DBServer server) {
-        execute(new Insert(insertIntoTable() + " (displayName,owner,plugins,players,port,status,world,host,motd,cmd,visible,icon,shop,vote,type,voteCmd,resource,ip) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        execute(new Insert(insertIntoTable() + " (displayName,owner,plugins,players,port,status,world,host,motd,cmd,visible,icon,shop,vote,type,voteCmd,resource,ip,direct) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 server.getDisplayName(),
                 server.getOwner().toString(),
                 gson.toJson(server.getPlugins()),
@@ -68,7 +69,8 @@ public class ServersTable extends MySQLStorage {
                 server.getType().name(),
                 server.getVoteCmd(),
                 server.getResource(),
-                server.getIp()) {
+                server.getIp(),
+                server.getDirect()) {
             @Override
             public void onInsert(List<Integer> integers) {
                 if (!integers.isEmpty())
@@ -106,6 +108,7 @@ public class ServersTable extends MySQLStorage {
                         server.setVoteCmd(resultSet.getString("voteCmd"));
                         server.setResource(resultSet.getString("resource"));
                         server.setIp(resultSet.getString("ip"));
+                        server.setDirect(resultSet.getString("direct"));
                         setReturnValue(true);
                     } else setReturnValue(false);
                 } catch (SQLException e) {
@@ -153,7 +156,8 @@ public class ServersTable extends MySQLStorage {
 					resultSet.getInt("vote"),
 					GameType.valueOf(resultSet.getString("type")),
 					resultSet.getString("voteCmd"),
-					resultSet.getString("resource"));
+					resultSet.getString("resource"),
+					resultSet.getString("direct"));
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -249,6 +253,23 @@ public class ServersTable extends MySQLStorage {
         });
 	}
 	
+	public DBServer getServerByDirect(String name) {
+		return (DBServer) executeQuery(new Query(selectFromTable("*","direct= ?"), name) {
+            @Override
+            protected void onResult(ResultSet resultSet) {
+                try {
+                    setReturnValue(null);
+                    if(resultSet.next())
+                    {
+                        setReturnValue(convert(resultSet));
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+	}
+	
 	@SuppressWarnings("unchecked")
 	public ArrayList<DBServer> getAll() {
 		return (ArrayList<DBServer>) executeQuery(new Query(selectFromTable("*")) {
@@ -307,10 +328,11 @@ public class ServersTable extends MySQLStorage {
 	}
 	
 	public void update(DBServer server) {
-        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,ip = ?,owner = ?,plugins = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,shop = ?,vote = ?,type = ?, voteCmd = ?, resource = ? WHERE id = ?",
+        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,ip = ?,owner = ?,plugins = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,shop = ?,vote = ?,type = ?, voteCmd = ?, resource = ?, direct = ? WHERE id = ?",
         		server.getDisplayName(),server.getPlayers(), server.getPort(), server.getIp(), server.getOwner().toString(),
         		gson.toJson(server.getPlugins()),server.getStatus().name(), server.getWorld(), server.getHost(), 
         		server.getMotd(), server.isCmd(), server.isVisible(), server.getIcon(), gson.toJson(server.getShop()),
-        		server.getVote(),server.getType().name(),server.getVoteCmd(), server.getResource(), server.getId());
+        		server.getVote(),server.getType().name(),server.getVoteCmd(), server.getResource(),
+        		server.getDirect(), server.getId());
     }
 }
