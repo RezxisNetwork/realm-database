@@ -24,6 +24,7 @@ public class ServerPluginLinkTable extends MySQLStorage {
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
         map.put("id", "INT PRIMARY KEY NOT NULL AUTO_INCREMENT,");
         map.put("server", "int,");
+        map.put("name", "text,");
         map.put("plugin", "int,");
         map.put("enabled", "boolean,");
         map.put("lastEnabled", "boolean");
@@ -31,9 +32,12 @@ public class ServerPluginLinkTable extends MySQLStorage {
     }
     
     public void insert(DBServerPluginLink link) {
-    	execute(new Insert(insertIntoTable() + " (server,plugin,enabled,lastEnabled) VALUES (?,?,?,?)",
-                link.getServer().getId(),
-                link.getPlugin().getId()) {
+    	execute(new Insert(insertIntoTable() + " (server,name,plugin,enabled,lastEnabled) VALUES (?,?,?,?,?)",
+                link.getServer(),
+                link.getName(),
+                link.getPlugin(),
+                link.isEnabled(),
+                link.isLastEnabled()) {
             @Override
             public void onInsert(List<Integer> keys) {
             	if (!keys.isEmpty())
@@ -42,8 +46,8 @@ public class ServerPluginLinkTable extends MySQLStorage {
         });
     }
     
-    public DBServerPluginLink getLink(int server, int plugin) {
-    	return (DBServerPluginLink) executeQuery(new Query(selectFromTable("*","server = ?, plugin = ?"), server, plugin) {
+    public DBServerPluginLink getLink(int server, String name) {
+    	return (DBServerPluginLink) executeQuery(new Query(selectFromTable("*","server = ?, name = ?"), server, name) {
             @Override
             protected void onResult(ResultSet resultSet) {
                 try {
@@ -75,8 +79,9 @@ public class ServerPluginLinkTable extends MySQLStorage {
     }
     
     public void update(DBServerPluginLink link) {
-    	execute("UPDATE " + getTable() + " SET server = ?, plugin = ?, enabled = ?, lastEnabled = ? WHERE id = ?",
+    	execute("UPDATE " + getTable() + " SET server = ?, name = ?, plugin = ?, enabled = ?, lastEnabled = ? WHERE id = ?",
     			link.getServer(),
+    			link.getName(),
     			link.getPlugin(),
     			link.isEnabled(),
     			link.isLastEnabled(),
@@ -86,7 +91,7 @@ public class ServerPluginLinkTable extends MySQLStorage {
     
     public static DBServerPluginLink convert(ResultSet rs) {
     	try {
-			return new DBServerPluginLink(rs.getInt("id"), rs.getInt("server"), rs.getInt("plugin"), rs.getBoolean("enabled"), rs.getBoolean("lastEnabled"));
+			return new DBServerPluginLink(rs.getInt("id"), rs.getInt("server"), rs.getString("name"), rs.getInt("plugin"), rs.getBoolean("enabled"), rs.getBoolean("lastEnabled"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -55,8 +55,26 @@ public class PluginsTable extends MySQLStorage {
         });
 	}
 	
+	@SuppressWarnings("unchecked")
+	public ArrayList<String> getNames() {
+		return (ArrayList<String>) executeQuery(new Query("SELECT DISTINCT name FROM `rezxis_plugins`") {
+            @Override
+            protected void onResult(ResultSet resultSet) {
+                try {
+                	ArrayList<String> plugins = new ArrayList<>();
+                    while (resultSet.next()) {
+                    	plugins.add(resultSet.getString("name"));
+                    }
+                    setReturnValue(plugins);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+	}
+	
 	public DBPlugin getPluginById(int id) {
-		return (DBPlugin) executeQuery(new Query(selectFromTable("*", "id = ?")) {
+		return (DBPlugin) executeQuery(new Query(selectFromTable("*", "id = ?"), id) {
             @SuppressWarnings("unchecked")
 			@Override
             protected void onResult(ResultSet resultSet) {
@@ -64,6 +82,24 @@ public class PluginsTable extends MySQLStorage {
                 	DBPlugin plugin = null;
                     if (resultSet.next()) {
                     	plugin = new DBPlugin(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("jar"),resultSet.getString("version"),gson.fromJson(resultSet.getString("depends"), ArrayList.class));
+                    }
+                    setReturnValue(plugin);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+	}
+	
+	@SuppressWarnings("unchecked")
+	public ArrayList<DBPlugin> get(String name) {
+		return (ArrayList<DBPlugin> ) executeQuery(new Query(selectFromTable("*", "name = ?"), name) {
+			@Override
+            protected void onResult(ResultSet resultSet) {
+                try {
+                	ArrayList<DBPlugin>  plugin = new ArrayList<DBPlugin>();
+                    if (resultSet.next()) {
+                    	plugin.add(new DBPlugin(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("jar"),resultSet.getString("version"),gson.fromJson(resultSet.getString("depends"), ArrayList.class)));
                     }
                     setReturnValue(plugin);
                 } catch (SQLException e) {
