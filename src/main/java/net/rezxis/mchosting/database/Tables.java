@@ -11,6 +11,7 @@ import net.rezxis.mchosting.database.tables.PlayersTable;
 import net.rezxis.mchosting.database.tables.PluginsTable;
 import net.rezxis.mchosting.database.tables.RezxisHostTable;
 import net.rezxis.mchosting.database.tables.RezxisKVTable;
+import net.rezxis.mchosting.database.tables.ServerPluginLinkTable;
 import net.rezxis.mchosting.database.tables.ServersTable;
 import net.rezxis.mchosting.database.tables.ThirdPartyTable;
 import net.rezxis.mchosting.database.tables.UuidTable;
@@ -33,6 +34,7 @@ public class Tables {
 	@Getter private static RezxisKVTable rezxisKVTable;
 	@Getter private static RezxisHostTable rezxisHostTable;
 	@Getter private static BungeeCordServersTable bungeeCordServersTable;
+	@Getter private static ServerPluginLinkTable splTable;
 	
 	public static void register() {
 		bTable = new BackupsTable();
@@ -49,5 +51,6 @@ public class Tables {
 		rezxisKVTable = new RezxisKVTable();
 		rezxisHostTable = new RezxisHostTable();
 		bungeeCordServersTable = new BungeeCordServersTable();
+		splTable = new ServerPluginLinkTable();
 	}
 }

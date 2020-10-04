@@ -10,11 +10,15 @@ public class DBServerPluginLink {
 	private int id;
 	private int server;
 	private int plugin;
+	private boolean enabled;
+	private boolean lastEnabled;
 	
-	public DBServerPluginLink(int id, int server, int plugin) {
+	public DBServerPluginLink(int id, int server, int plugin, boolean enabled, boolean lastEnabled) {
 		this.id = id;
 		this.server = server;
 		this.plugin = plugin;
+		this.enabled = enabled;
+		this.lastEnabled = lastEnabled;
 	}
 	
 	public DBServer getServer() {
@@ -23,5 +27,9 @@ public class DBServerPluginLink {
 	
 	public DBPlugin getPlugin() {
 		return Tables.getPlTable().getPluginById(plugin);
+	}
+	
+	public void update() {
+		Tables.getSplTable().update(this);
 	}
 }
