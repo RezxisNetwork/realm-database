@@ -23,6 +23,7 @@ public class PluginsTable extends MySQLStorage {
 		prefix = "rezxis_";
 		tablename = "plugins";
 		LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
+		map.put("id", "INT PRIMARY KEY NOT NULL AUTO_INCREMENT,");
 		map.put("name", "text,");
 		map.put("jarname", "text,");
 		map.put("version", "text,");
@@ -40,12 +41,31 @@ public class PluginsTable extends MySQLStorage {
                     while (resultSet.next()) {
                     	plugins.put(resultSet.getString("name"),
                     			new DBPlugin(
-                    			resultSet.getString("name"),
-                    			resultSet.getString("jarname"),
-                    			resultSet.getString("version"),
-                    			gson.fromJson(resultSet.getString("depends"), ArrayList.class)));
+                    					resultSet.getInt("id"),
+                    					resultSet.getString("name"),
+                    					resultSet.getString("jarname"),
+                    					resultSet.getString("version"),
+                    					gson.fromJson(resultSet.getString("depends"), ArrayList.class)));
                     }
                     setReturnValue(plugins);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+	}
+	
+	public DBPlugin getPluginById(int id) {
+		return (DBPlugin) executeQuery(new Query(selectFromTable("*", "id = ?")) {
+            @SuppressWarnings("unchecked")
+			@Override
+            protected void onResult(ResultSet resultSet) {
+                try {
+                	DBPlugin plugin = null;
+                    if (resultSet.next()) {
+                    	plugin = new DBPlugin(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("jar"),resultSet.getString("version"),gson.fromJson(resultSet.getString("depends"), ArrayList.class));
+                    }
+                    setReturnValue(plugin);
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
