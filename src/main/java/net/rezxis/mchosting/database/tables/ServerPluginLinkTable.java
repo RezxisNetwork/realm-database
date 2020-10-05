@@ -68,7 +68,7 @@ public class ServerPluginLinkTable extends MySQLStorage {
             protected void onResult(ResultSet resultSet) {
                 try {
                 	ArrayList<DBServerPluginLink> list = new ArrayList<>();
-                    if(resultSet.next())
+                    while (resultSet.next())
                         list.add(convert(resultSet));
                     setReturnValue(list);
                 } catch (SQLException e) {
