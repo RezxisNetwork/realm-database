@@ -81,7 +81,7 @@ public class PluginsTable extends MySQLStorage {
                 try {
                 	DBPlugin plugin = null;
                     if (resultSet.next()) {
-                    	plugin = new DBPlugin(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("jar"),resultSet.getString("version"),gson.fromJson(resultSet.getString("depends"), ArrayList.class));
+                    	plugin = new DBPlugin(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("jarname"),resultSet.getString("version"),gson.fromJson(resultSet.getString("depends"), ArrayList.class));
                     }
                     setReturnValue(plugin);
                 } catch (SQLException e) {
@@ -99,7 +99,7 @@ public class PluginsTable extends MySQLStorage {
                 try {
                 	ArrayList<DBPlugin>  plugin = new ArrayList<DBPlugin>();
                     if (resultSet.next()) {
-                    	plugin.add(new DBPlugin(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("jar"),resultSet.getString("version"),gson.fromJson(resultSet.getString("depends"), ArrayList.class)));
+                    	plugin.add(new DBPlugin(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("jarname"),resultSet.getString("version"),gson.fromJson(resultSet.getString("depends"), ArrayList.class)));
                     }
                     setReturnValue(plugin);
                 } catch (SQLException e) {
