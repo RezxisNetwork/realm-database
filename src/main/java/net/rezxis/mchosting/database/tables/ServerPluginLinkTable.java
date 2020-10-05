@@ -47,7 +47,7 @@ public class ServerPluginLinkTable extends MySQLStorage {
     }
     
     public DBServerPluginLink getLink(int server, String name) {
-    	return (DBServerPluginLink) executeQuery(new Query(selectFromTable("*","server = ?, name = ?"), server, name) {
+    	return (DBServerPluginLink) executeQuery(new Query(selectFromTable("*","server = ? AND name = ?"), server, name) {
             @Override
             protected void onResult(ResultSet resultSet) {
                 try {
