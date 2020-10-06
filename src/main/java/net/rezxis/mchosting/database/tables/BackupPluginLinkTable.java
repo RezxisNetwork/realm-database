@@ -72,7 +72,7 @@ public class BackupPluginLinkTable extends MySQLStorage {
     
     public static DBBackupPluginLink convert(ResultSet rs) {
     	try {
-			return new DBBackupPluginLink(rs.getInt("id"), rs.getInt("server"), rs.getInt("plugin"));
+			return new DBBackupPluginLink(rs.getInt("id"), rs.getInt("backup"), rs.getInt("plugin"));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
