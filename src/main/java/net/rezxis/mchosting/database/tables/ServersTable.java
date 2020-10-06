@@ -50,7 +50,7 @@ public class ServersTable extends MySQLStorage {
 	}
 	
 	public void insert(DBServer server) {
-        execute(new Insert(insertIntoTable() + " (displayName,owner,players,port,status,world,host,motd,cmd,visible,icon,shop,vote,type,voteCmd,resource,ip,direct) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        execute(new Insert(insertIntoTable() + " (displayName,owner,players,port,status,world,host,motd,cmd,visible,icon,shop,vote,type,voteCmd,resource,ip,direct) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 server.getDisplayName(),
                 server.getPlayers(),
                 server.getPort(),
