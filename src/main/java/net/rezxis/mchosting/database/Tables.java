@@ -1,6 +1,7 @@
 package net.rezxis.mchosting.database;
 
 import lombok.Getter;
+import net.rezxis.mchosting.database.tables.BackupPluginLinkTable;
 import net.rezxis.mchosting.database.tables.BackupsTable;
 import net.rezxis.mchosting.database.tables.BungeeCordServersTable;
 import net.rezxis.mchosting.database.tables.CrateTable;
@@ -35,6 +36,7 @@ public class Tables {
 	@Getter private static RezxisHostTable rezxisHostTable;
 	@Getter private static BungeeCordServersTable bungeeCordServersTable;
 	@Getter private static ServerPluginLinkTable splTable;
+	@Getter private static BackupPluginLinkTable bplTable;
 	
 	public static void register() {
 		bTable = new BackupsTable();
@@ -52,5 +54,6 @@ public class Tables {
 		rezxisHostTable = new RezxisHostTable();
 		bungeeCordServersTable = new BungeeCordServersTable();
 		splTable = new ServerPluginLinkTable();
+		bplTable = new BackupPluginLinkTable();
 	}
 }

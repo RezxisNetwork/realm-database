@@ -46,6 +46,10 @@ public class ServerPluginLinkTable extends MySQLStorage {
         });
     }
     
+    public void delete(DBServerPluginLink link) {
+    	execute("DELETE FROM rezxis_link_server_plugin WHERE id=?",link.getId());
+    }
+    
     public DBServerPluginLink getLink(int server, String name) {
     	return (DBServerPluginLink) executeQuery(new Query(selectFromTable("*","server = ? AND name = ?"), server, name) {
             @Override

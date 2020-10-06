@@ -1,6 +1,5 @@
 package net.rezxis.mchosting.database.object.server;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 import lombok.Getter;
@@ -11,7 +10,6 @@ import net.rezxis.mchosting.database.tables.ServersTable;
 @Setter
 public class DBServer {
 	
-	private ArrayList<String> plugins;
 	private int id;
 	private String displayName;
 	private UUID owner;
@@ -32,7 +30,7 @@ public class DBServer {
 	private String resource;
 	private String direct;
 	
-	public DBServer(int id, String displayName, UUID owner, int port, String ip, ArrayList<String> plugins,
+	public DBServer(int id, String displayName, UUID owner, int port, String ip,
 			int players, ServerStatus status, String world, int host, String motd,
 			boolean cmd, boolean visible, String icon, DBShop shop,int vote,GameType type,String voteCmd,String resource,String direct) {
 		this.id = id;
@@ -40,7 +38,6 @@ public class DBServer {
 		this.owner = owner;
 		this.port = port;
 		this.ip = ip;
-		this.plugins = plugins;
 		this.players = players;
 		this.status = status;
 		this.world = world;

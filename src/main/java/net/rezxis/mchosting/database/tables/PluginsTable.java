@@ -98,7 +98,7 @@ public class PluginsTable extends MySQLStorage {
             protected void onResult(ResultSet resultSet) {
                 try {
                 	ArrayList<DBPlugin>  plugin = new ArrayList<DBPlugin>();
-                    if (resultSet.next()) {
+                    while (resultSet.next()) {
                     	plugin.add(new DBPlugin(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("jarname"),resultSet.getString("version"),gson.fromJson(resultSet.getString("depends"), ArrayList.class)));
                     }
                     setReturnValue(plugin);

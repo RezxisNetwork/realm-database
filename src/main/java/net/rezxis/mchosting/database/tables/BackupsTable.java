@@ -26,17 +26,15 @@ public class BackupsTable extends MySQLStorage {
         map.put("owner", "text,");
         map.put("name", "text,");
         map.put("creation", "datetime,");
-        map.put("plugins", "text,");
         map.put("shop", "text");
         createTable(map);
     }
     
     public void insert(DBBackup back) {
-    	execute(new Insert(insertIntoTable() + " (owner,name,creation,plugins,shop) VALUES (?,?,?,?,?)",
+    	execute(new Insert(insertIntoTable() + " (owner,name,creation,shop) VALUES (?,?,?,?)",
                 back.getOwner(),
                 back.getName(),
                 back.getCreation(),
-                gson.toJson(back.getPlugins()),
                 back.getShop()) {
             @Override
             public void onInsert(List<Integer> keys) {
@@ -51,11 +49,10 @@ public class BackupsTable extends MySQLStorage {
 	}
     
     public void update(DBBackup obj) {
-        execute("UPDATE " + getTable() + " SET owner = ?, name = ?, creation = ?,plugins = ?,shop = ? WHERE id = ?",
+        execute("UPDATE " + getTable() + " SET owner = ?, name = ?, creation = ?,shop = ? WHERE id = ?",
         		obj.getOwner(),
         		obj.getName(),
         		obj.getCreation(),
-        		gson.toJson(obj.getPlugins()),
         		obj.getShop(),
         		obj.getId());
     }
@@ -72,7 +69,6 @@ public class BackupsTable extends MySQLStorage {
                     			resultSet.getString("owner"),
                     			resultSet.getString("name"),
                     			resultSet.getTimestamp("creation"),
-                    			gson.fromJson(resultSet.getString("plugins"), ArrayList.class),
                     			resultSet.getString("shop")));
                     }
                 } catch (SQLException e) {
@@ -96,7 +92,6 @@ public class BackupsTable extends MySQLStorage {
                     			owner,
                     			resultSet.getString("name"),
                     			resultSet.getTimestamp("creation"),
-                    			gson.fromJson(resultSet.getString("plugins"), ArrayList.class),
                     			resultSet.getString("shop")));
                     }
                     setReturnValue(arr);
@@ -121,7 +116,6 @@ public class BackupsTable extends MySQLStorage {
                     			resultSet.getString("owner"),
                     			resultSet.getString("name"),
                     			resultSet.getTimestamp("creation"),
-                    			gson.fromJson(resultSet.getString("plugins"), ArrayList.class),
                     			resultSet.getString("shop")));
                     }
                     setReturnValue(arr);

@@ -30,7 +30,6 @@ public class ServersTable extends MySQLStorage {
 		map.put("id", "INT PRIMARY KEY NOT NULL AUTO_INCREMENT,");
 		map.put("displayName", "text,");
 		map.put("owner", "text,");
-		map.put("plugins", "text,");
 		map.put("players", "int,");
 		map.put("port", "int,");
 		map.put("status", "text,");
@@ -51,10 +50,8 @@ public class ServersTable extends MySQLStorage {
 	}
 	
 	public void insert(DBServer server) {
-        execute(new Insert(insertIntoTable() + " (displayName,owner,plugins,players,port,status,world,host,motd,cmd,visible,icon,shop,vote,type,voteCmd,resource,ip,direct) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        execute(new Insert(insertIntoTable() + " (displayName,owner,players,port,status,world,host,motd,cmd,visible,icon,shop,vote,type,voteCmd,resource,ip,direct) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 server.getDisplayName(),
-                server.getOwner().toString(),
-                gson.toJson(server.getPlugins()),
                 server.getPlayers(),
                 server.getPort(),
                 server.getStatus().name(),
@@ -85,7 +82,6 @@ public class ServersTable extends MySQLStorage {
 	
 	public boolean load(final DBServer server) {
         return (Boolean) executeQuery(new Query(selectFromTable("*") + " WHERE owner = ?", server.getOwner().toString()) {
-            @SuppressWarnings("unchecked")
 			@Override
             protected void onResult(ResultSet resultSet) {
                 try {
@@ -94,7 +90,6 @@ public class ServersTable extends MySQLStorage {
                         server.setDisplayName(resultSet.getString("displayName"));
                         server.setPort(resultSet.getInt("port"));
                         server.setPlayers(resultSet.getInt("players"));
-                        server.setPlugins(gson.fromJson(resultSet.getString("plugins"), ArrayList.class));
                         server.setStatus(ServerStatus.valueOf(resultSet.getString("status")));
                         server.setWorld(resultSet.getString("world"));
                         server.setHost(resultSet.getInt("host"));
@@ -135,7 +130,6 @@ public class ServersTable extends MySQLStorage {
         });
     }
 	
-	@SuppressWarnings("unchecked")
 	private static DBServer convert(ResultSet resultSet) {
 		try {
 			return new DBServer(resultSet.getInt("id"),
@@ -143,7 +137,6 @@ public class ServersTable extends MySQLStorage {
 					UUID.fromString(resultSet.getString("owner")),
 					resultSet.getInt("port"),
 					resultSet.getString("ip"),
-					gson.fromJson(resultSet.getString("plugins"),ArrayList.class),
 					resultSet.getInt("players"),
 					ServerStatus.valueOf(resultSet.getString("status")),
 					resultSet.getString("world"),
@@ -328,9 +321,9 @@ public class ServersTable extends MySQLStorage {
 	}
 	
 	public void update(DBServer server) {
-        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,ip = ?,owner = ?,plugins = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,shop = ?,vote = ?,type = ?, voteCmd = ?, resource = ?, direct = ? WHERE id = ?",
+        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,ip = ?,owner = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,shop = ?,vote = ?,type = ?, voteCmd = ?, resource = ?, direct = ? WHERE id = ?",
         		server.getDisplayName(),server.getPlayers(), server.getPort(), server.getIp(), server.getOwner().toString(),
-        		gson.toJson(server.getPlugins()),server.getStatus().name(), server.getWorld(), server.getHost(), 
+        		server.getStatus().name(), server.getWorld(), server.getHost(), 
         		server.getMotd(), server.isCmd(), server.isVisible(), server.getIcon(), gson.toJson(server.getShop()),
         		server.getVote(),server.getType().name(),server.getVoteCmd(), server.getResource(),
         		server.getDirect(), server.getId());
