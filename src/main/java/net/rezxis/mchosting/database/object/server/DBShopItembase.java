@@ -1,5 +1,5 @@
 package net.rezxis.mchosting.database.object.server;
-
+/*
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,4 +18,4 @@ public class DBShopItembase {
 		this.cmd = cmd;
 		this.earned = earned;
 	}
-}
+}*/

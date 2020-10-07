@@ -13,7 +13,6 @@ import com.google.gson.JsonSyntaxException;
 import net.rezxis.mchosting.database.MySQLStorage;
 import net.rezxis.mchosting.database.object.server.DBServer;
 import net.rezxis.mchosting.database.object.server.DBServer.GameType;
-import net.rezxis.mchosting.database.object.server.DBShop;
 import net.rezxis.mchosting.database.object.server.ServerStatus;
 
 public class ServersTable extends MySQLStorage {
@@ -39,7 +38,7 @@ public class ServersTable extends MySQLStorage {
 		map.put("cmd","boolean,");
 		map.put("visible", "boolean,");
 		map.put("icon", "text,");
-		map.put("shop", "text,");
+		//map.put("shop", "text,");
 		map.put("vote", "int,");
 		map.put("type", "text,");
 		map.put("voteCmd", "text,");
@@ -50,7 +49,8 @@ public class ServersTable extends MySQLStorage {
 	}
 	
 	public void insert(DBServer server) {
-        execute(new Insert(insertIntoTable() + " (displayName,owner,players,port,status,world,host,motd,cmd,visible,icon,shop,vote,type,voteCmd,resource,ip,direct) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+		//execute(new Insert(insertIntoTable() + " (displayName,owner,players,port,status,world,host,motd,cmd,visible,icon,shop,vote,type,voteCmd,resource,ip,direct) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        execute(new Insert(insertIntoTable() + " (displayName,owner,players,port,status,world,host,motd,cmd,visible,icon,vote,type,voteCmd,resource,ip,direct) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 server.getDisplayName(),
                 server.getOwner().toString(),
                 server.getPlayers(),
@@ -62,7 +62,7 @@ public class ServersTable extends MySQLStorage {
                 server.isCmd(),
                 server.isVisible(),
                 server.getIcon(),
-                gson.toJson(server.getShop()),
+                //gson.toJson(server.getShop()),
                 server.getVote(),
                 server.getType().name(),
                 server.getVoteCmd(),
@@ -98,7 +98,7 @@ public class ServersTable extends MySQLStorage {
                         server.setCmd(resultSet.getBoolean("cmd"));
                         server.setVisible(resultSet.getBoolean("visible"));
                         server.setIcon(resultSet.getString("icon"));
-                        server.setShop(gson.fromJson(resultSet.getString("shop"), DBShop.class));
+                        //server.setShop(gson.fromJson(resultSet.getString("shop"), DBShop.class));
                         server.setVote(resultSet.getInt("vote"));
                         server.setType(GameType.valueOf(resultSet.getString("type")));
                         server.setVoteCmd(resultSet.getString("voteCmd"));
@@ -146,7 +146,7 @@ public class ServersTable extends MySQLStorage {
 					resultSet.getBoolean("cmd"),
 					resultSet.getBoolean("visible"),
 					resultSet.getString("icon"),
-					gson.fromJson(resultSet.getString("shop"), DBShop.class),
+					//gson.fromJson(resultSet.getString("shop"), DBShop.class),
 					resultSet.getInt("vote"),
 					GameType.valueOf(resultSet.getString("type")),
 					resultSet.getString("voteCmd"),
@@ -322,10 +322,12 @@ public class ServersTable extends MySQLStorage {
 	}
 	
 	public void update(DBServer server) {
-        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,ip = ?,owner = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,shop = ?,vote = ?,type = ?, voteCmd = ?, resource = ?, direct = ? WHERE id = ?",
+		//execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,ip = ?,owner = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,shop = ?,vote = ?,type = ?, voteCmd = ?, resource = ?, direct = ? WHERE id = ?",
+        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,ip = ?,owner = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,vote = ?,type = ?, voteCmd = ?, resource = ?, direct = ? WHERE id = ?",
         		server.getDisplayName(),server.getPlayers(), server.getPort(), server.getIp(), server.getOwner().toString(),
         		server.getStatus().name(), server.getWorld(), server.getHost(), 
-        		server.getMotd(), server.isCmd(), server.isVisible(), server.getIcon(), gson.toJson(server.getShop()),
+        		server.getMotd(), server.isCmd(), server.isVisible(), server.getIcon(),
+        		//gson.toJson(server.getShop()),
         		server.getVote(),server.getType().name(),server.getVoteCmd(), server.getResource(),
         		server.getDirect(), server.getId());
     }

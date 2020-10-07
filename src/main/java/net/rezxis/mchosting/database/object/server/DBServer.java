@@ -23,7 +23,7 @@ public class DBServer {
 	private boolean cmd;
 	private boolean visible;
 	private String icon;
-	private DBShop shop;
+	//private DBShop shop;
 	private int vote;
 	private GameType type;
 	private String voteCmd;
@@ -32,7 +32,7 @@ public class DBServer {
 	
 	public DBServer(int id, String displayName, UUID owner, int port, String ip,
 			int players, ServerStatus status, String world, int host, String motd,
-			boolean cmd, boolean visible, String icon, DBShop shop,int vote,GameType type,String voteCmd,String resource,String direct) {
+			boolean cmd, boolean visible, String icon/*, DBShop shop*/,int vote,GameType type,String voteCmd,String resource,String direct) {
 		this.id = id;
 		this.displayName = displayName;
 		this.owner = owner;
@@ -46,7 +46,7 @@ public class DBServer {
 		this.cmd = cmd;
 		this.visible = visible;
 		this.icon = icon;
-		this.shop = shop;
+		//this.shop = shop;
 		this.vote = vote;
 		this.type = type;
 		this.voteCmd = voteCmd;

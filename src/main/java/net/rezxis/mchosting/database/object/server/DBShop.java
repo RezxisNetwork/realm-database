@@ -1,5 +1,5 @@
 package net.rezxis.mchosting.database.object.server;
-
+/*
 import java.util.ArrayList;
 
 public class DBShop {
@@ -22,3 +22,4 @@ public class DBShop {
 		this.items.remove(shop);
 	}
 }
+*/
