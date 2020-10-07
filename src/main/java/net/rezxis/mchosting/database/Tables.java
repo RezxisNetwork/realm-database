@@ -2,6 +2,7 @@ package net.rezxis.mchosting.database;
 
 import lombok.Getter;
 import net.rezxis.mchosting.database.tables.BackupPluginLinkTable;
+import net.rezxis.mchosting.database.tables.BackupShopItemLinkTable;
 import net.rezxis.mchosting.database.tables.BackupsTable;
 import net.rezxis.mchosting.database.tables.BungeeCordServersTable;
 import net.rezxis.mchosting.database.tables.CrateTable;
@@ -14,6 +15,7 @@ import net.rezxis.mchosting.database.tables.RezxisHostTable;
 import net.rezxis.mchosting.database.tables.RezxisKVTable;
 import net.rezxis.mchosting.database.tables.ServerPluginLinkTable;
 import net.rezxis.mchosting.database.tables.ServersTable;
+import net.rezxis.mchosting.database.tables.ShopItemTable;
 import net.rezxis.mchosting.database.tables.ThirdPartyTable;
 import net.rezxis.mchosting.database.tables.UuidTable;
 import net.rezxis.mchosting.database.tables.VoteTable;
@@ -37,6 +39,8 @@ public class Tables {
 	@Getter private static BungeeCordServersTable bungeeCordServersTable;
 	@Getter private static ServerPluginLinkTable splTable;
 	@Getter private static BackupPluginLinkTable bplTable;
+	@Getter private static ShopItemTable siTable;
+	@Getter private static BackupShopItemLinkTable bsiTable;
 	
 	public static void register() {
 		bTable = new BackupsTable();
@@ -55,5 +59,7 @@ public class Tables {
 		bungeeCordServersTable = new BungeeCordServersTable();
 		splTable = new ServerPluginLinkTable();
 		bplTable = new BackupPluginLinkTable();
+		siTable = new ShopItemTable();
+		bsiTable = new BackupShopItemLinkTable();
 	}
 }

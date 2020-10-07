@@ -1,6 +1,5 @@
 package net.rezxis.mchosting.database.object.internal;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import lombok.Getter;
@@ -22,6 +21,14 @@ public class DBBackup {
 		this.name = name;
 		this.owner = owner;
 		this.shop = shop;
+	}
+	
+	public DBBackup(int id, String owner, String name, Date creation) {
+		this.creation = creation;
+		this.id = id;
+		this.name = name;
+		this.owner = owner;
+		this.shop = null;
 	}
 	
 	public void update() {

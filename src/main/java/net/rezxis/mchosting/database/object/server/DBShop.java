@@ -4,21 +4,21 @@ import java.util.ArrayList;
 
 public class DBShop {
 
-	private ArrayList<ShopItem> items = new ArrayList<>();
+	private ArrayList<DBShopItembase> items = new ArrayList<>();
 	
-	public DBShop(ArrayList<ShopItem> items) {
+	public DBShop(ArrayList<DBShopItembase> items) {
 		this.items = items;
 	}
 	
-	public ArrayList<ShopItem> getItems() {
+	public ArrayList<DBShopItembase> getItems() {
 		return this.items;
 	}
 	
-	public void addItem(ShopItem shop) {
+	public void addItem(DBShopItembase shop) {
 		this.items.add(shop);
 	}
 	
-	public void removeItem(ShopItem shop) {
+	public void removeItem(DBShopItembase shop) {
 		this.items.remove(shop);
 	}
 }
