@@ -94,7 +94,7 @@ public class RezxisPlayerLoadEvent extends Event {
                         task.execute(player);
                     } catch (Exception e)
                     {
-                        Bukkit.getLogger().warning("A Join task for Shotbow Player threw an exception");
+                        Bukkit.getLogger().warning("A Join task for rezxis Player threw an exception");
                         e.printStackTrace();
                     }
                 }

@@ -13,30 +13,30 @@ public class ComponentBag {
 
     HashMap<Class<? extends PlayerComponent>,PlayerComponent> statuses = new HashMap<>();
 
-    public void addComponent(RezxisPlayer shotbowPlayer, PlayerComponent playerComponent) {
+    public void addComponent(RezxisPlayer rezxisPlayer, PlayerComponent playerComponent) {
         if(statuses.containsKey(playerComponent.getClass()))
         {
-        	System.out.print("Tried to add a " + playerComponent.getClass() + " to " + shotbowPlayer.getName() + ", but they already have one!!! Remove it first.");
-            //new Exception("Tried to add a " + playerComponent.getClass() + " to " + shotbowPlayer.getName() + ", but they already have one!!! Remove it first.").printStackTrace();
+        	System.out.print("Tried to add a " + playerComponent.getClass() + " to " + rezxisPlayer.getName() + ", but they already have one!!! Remove it first.");
+            //new Exception("Tried to add a " + playerComponent.getClass() + " to " + rezxisPlayer.getName() + ", but they already have one!!! Remove it first.").printStackTrace();
             //return;
         }
         statuses.put(playerComponent.getClass(), playerComponent);
-        playerComponent.onAdd(shotbowPlayer);
+        playerComponent.onAdd(rezxisPlayer);
     }
 
-    public PlayerComponent removeComponent(RezxisPlayer shotbowPlayer, Class<? extends PlayerComponent> status)
+    public PlayerComponent removeComponent(RezxisPlayer rezxisPlayer, Class<? extends PlayerComponent> status)
     {
         PlayerComponent remove = statuses.remove(status);
         if(remove != null){
-            remove.onRemove(shotbowPlayer);
+            remove.onRemove(rezxisPlayer);
         }
         return remove;
     }
 
-    public void removeAllComponents(RezxisPlayer shotbowPlayer)
+    public void removeAllComponents(RezxisPlayer rezxisPlayer)
     {
         for (PlayerComponent playerComponent : statuses.values()) {
-            playerComponent.onRemove(shotbowPlayer);
+            playerComponent.onRemove(rezxisPlayer);
         }
 
         statuses.clear();

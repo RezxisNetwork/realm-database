@@ -37,7 +37,7 @@ public class RezxisPlayerManager implements Listener {
 
     public static RezxisPlayer createPlayer(final Player player)
     {
-        new Exception(player.getName() + " does not have a shotbow player!!!").printStackTrace();
+        new Exception(player.getName() + " does not have a rezxis player!!!").printStackTrace();
         return createPlayer(player.getUniqueId(), player.getName(), true, null);
     }
 
@@ -45,8 +45,8 @@ public class RezxisPlayerManager implements Listener {
     {
         if(RezxisPlayer.getOnlineByUUID(uuid) != null)
         {
-//            if(ShotbowSql.instance.getConfiguration().debug)
-//                new Exception("Tried to make a shotbowplayer for " + name + ", but there's already one loaded!").printStackTrace();
+//            if(rezxisSql.instance.getConfiguration().debug)
+//                new Exception("Tried to make a rezxisplayer for " + name + ", but there's already one loaded!").printStackTrace();
             return RezxisPlayer.getOnlineByUUID(uuid);
         }
         final RezxisPlayer rezxisPlayer = new RezxisPlayer(uuid, name);
@@ -188,7 +188,7 @@ public class RezxisPlayerManager implements Listener {
         {
             createPlayer(e.getUniqueId(), e.getName(), false, e);
         }else {
-            Bukkit.getLogger().info("No need to create a shotbow player for "+e.getName()+", as there is already one here.");
+            Bukkit.getLogger().info("No need to create a rezxis player for "+e.getName()+", as there is already one here.");
             fireLoadEvent(RezxisPlayer.getOnlineByUUID(e.getUniqueId()),e);
         }
     }

@@ -48,24 +48,24 @@ public class RezxisPlayerTable extends MySQLStorage {
         tablename = "player";
     }
 
-    public boolean load(final RezxisPlayer shotbowPlayer)
+    public boolean load(final RezxisPlayer rezxisPlayer)
     {
-        return (Boolean) executeQuery(new Query(selectFromTable("id,name,xf_user") + " WHERE uuid = ?", shotbowPlayer.getUUID().toString().replace("-", "")) {
+        return (Boolean) executeQuery(new Query(selectFromTable("id,name,xf_user") + " WHERE uuid = ?", rezxisPlayer.getUUID().toString().replace("-", "")) {
             @Override
             protected void onResult(ResultSet resultSet) {
                 try {
                     if (resultSet.next()) {
-                        shotbowPlayer.setPlayerId(resultSet.getInt(1));
+                        rezxisPlayer.setPlayerId(resultSet.getInt(1));
                         String name = resultSet.getString(2);
-                        shotbowPlayer.setXfUser(resultSet.getInt(3));
-                        Bukkit.getLogger().info(name +","+ shotbowPlayer.getName());
-                        if(!shotbowPlayer.getName().equals(name))
+                        rezxisPlayer.setXfUser(resultSet.getInt(3));
+                        Bukkit.getLogger().info(name +","+ rezxisPlayer.getName());
+                        if(!rezxisPlayer.getName().equals(name))
                         {
-                            Bukkit.getLogger().info(name + " is now wanting to be called " + shotbowPlayer.getName());
-                            PlayerChangedNameEvent event = new PlayerChangedNameEvent(shotbowPlayer, name);
+                            Bukkit.getLogger().info(name + " is now wanting to be called " + rezxisPlayer.getName());
+                            PlayerChangedNameEvent event = new PlayerChangedNameEvent(rezxisPlayer, name);
                             Bukkit.getLogger().info("called Event");
                             Bukkit.getPluginManager().callEvent(event);
-                            updateName(shotbowPlayer);
+                            updateName(rezxisPlayer);
                         }
                         setReturnValue(true);
                     }else setReturnValue(false);
@@ -76,19 +76,19 @@ public class RezxisPlayerTable extends MySQLStorage {
         });
     }
 
-    private void updateName(RezxisPlayer shotbowPlayer) {
-        execute("UPDATE " + getTable() + " SET name = ?, last_updated = Now() WHERE id = ?", shotbowPlayer.getName(), shotbowPlayer.getPlayerId());
+    private void updateName(RezxisPlayer rezxisPlayer) {
+        execute("UPDATE " + getTable() + " SET name = ?, last_updated = Now() WHERE id = ?", rezxisPlayer.getName(), rezxisPlayer.getPlayerId());
     }
 
-    public void insert(final RezxisPlayer shotbowPlayer)
+    public void insert(final RezxisPlayer rezxisPlayer)
     {
         execute(new Insert(insertIntoTable() + " (uuid,name,last_updated) VALUES (?,?,Now())",
-                shotbowPlayer.getUUID().toString().replace("-", ""),
-                shotbowPlayer.getName()) {
+                rezxisPlayer.getUUID().toString().replace("-", ""),
+                rezxisPlayer.getName()) {
             @Override
             public void onInsert(List<Integer> integers) {
                 if (!integers.isEmpty())
-                    shotbowPlayer.setPlayerId(integers.get(0));
+                    rezxisPlayer.setPlayerId(integers.get(0));
             }
         });
     }
@@ -155,9 +155,9 @@ public class RezxisPlayerTable extends MySQLStorage {
         });
     }
 
-    public void saveXenId(RezxisPlayer shotbowPlayer)
+    public void saveXenId(RezxisPlayer rezxisPlayer)
     {
-        execute("UPDATE " + getTable() + " SET xf_user = ? WHERE id = ?",shotbowPlayer.getXfUser(),shotbowPlayer.getPlayerId());
+        execute("UPDATE " + getTable() + " SET xf_user = ? WHERE id = ?",rezxisPlayer.getXfUser(),rezxisPlayer.getPlayerId());
     }
 
     public RezxisPlayer getByXen(final int id) {
