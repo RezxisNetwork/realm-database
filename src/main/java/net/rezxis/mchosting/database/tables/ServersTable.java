@@ -14,6 +14,7 @@ import net.rezxis.mchosting.database.MySQLStorage;
 import net.rezxis.mchosting.database.object.server.DBServer;
 import net.rezxis.mchosting.database.object.server.DBServer.GameType;
 import net.rezxis.mchosting.database.object.server.ServerStatus;
+import net.rezxis.mchosting.database.object.server.Version;
 
 public class ServersTable extends MySQLStorage {
 
@@ -44,13 +45,14 @@ public class ServersTable extends MySQLStorage {
 		map.put("voteCmd", "text,");
 		map.put("resource", "text,");
 		map.put("ip", "text,");
-		map.put("direct", "text");
+		map.put("direct", "text,");
+		map.put("version", "text");
 		createTable(map);
 	}
 	
 	public void insert(DBServer server) {
 		//execute(new Insert(insertIntoTable() + " (displayName,owner,players,port,status,world,host,motd,cmd,visible,icon,shop,vote,type,voteCmd,resource,ip,direct) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-        execute(new Insert(insertIntoTable() + " (displayName,owner,players,port,status,world,host,motd,cmd,visible,icon,vote,type,voteCmd,resource,ip,direct) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+        execute(new Insert(insertIntoTable() + " (displayName,owner,players,port,status,world,host,motd,cmd,visible,icon,vote,type,voteCmd,resource,ip,direct,version) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 server.getDisplayName(),
                 server.getOwner().toString(),
                 server.getPlayers(),
@@ -68,7 +70,8 @@ public class ServersTable extends MySQLStorage {
                 server.getVoteCmd(),
                 server.getResource(),
                 server.getIp(),
-                server.getDirect()) {
+                server.getDirect(),
+                server.getVersion().name()) {
             @Override
             public void onInsert(List<Integer> integers) {
                 if (!integers.isEmpty())
@@ -105,6 +108,7 @@ public class ServersTable extends MySQLStorage {
                         server.setResource(resultSet.getString("resource"));
                         server.setIp(resultSet.getString("ip"));
                         server.setDirect(resultSet.getString("direct"));
+                        server.setVersion(Version.valueOf(resultSet.getString("version")));
                         setReturnValue(true);
                     } else setReturnValue(false);
                 } catch (SQLException e) {
@@ -151,7 +155,8 @@ public class ServersTable extends MySQLStorage {
 					GameType.valueOf(resultSet.getString("type")),
 					resultSet.getString("voteCmd"),
 					resultSet.getString("resource"),
-					resultSet.getString("direct"));
+					resultSet.getString("direct"),
+					Version.valueOf(resultSet.getString("version")));
 		} catch (JsonSyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -323,12 +328,12 @@ public class ServersTable extends MySQLStorage {
 	
 	public void update(DBServer server) {
 		//execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,ip = ?,owner = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,shop = ?,vote = ?,type = ?, voteCmd = ?, resource = ?, direct = ? WHERE id = ?",
-        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,ip = ?,owner = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,vote = ?,type = ?, voteCmd = ?, resource = ?, direct = ? WHERE id = ?",
+        execute("UPDATE " + getTable() + " SET displayName = ?,players = ?,port = ?,ip = ?,owner = ?,status = ?,world = ?,host = ?,motd = ?,cmd = ?,visible = ?,icon = ?,vote = ?,type = ?, voteCmd = ?, resource = ?, direct = ?, version = ? WHERE id = ?",
         		server.getDisplayName(),server.getPlayers(), server.getPort(), server.getIp(), server.getOwner().toString(),
         		server.getStatus().name(), server.getWorld(), server.getHost(), 
         		server.getMotd(), server.isCmd(), server.isVisible(), server.getIcon(),
         		//gson.toJson(server.getShop()),
         		server.getVote(),server.getType().name(),server.getVoteCmd(), server.getResource(),
-        		server.getDirect(), server.getId());
+        		server.getDirect(), server.getVersion().name(), server.getId());
     }
 }

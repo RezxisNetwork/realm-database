@@ -27,7 +27,8 @@ public class PluginsTable extends MySQLStorage {
 		map.put("name", "text,");
 		map.put("jarname", "text,");
 		map.put("version", "text,");
-		map.put("depends", "text");
+		map.put("depends", "text,");
+		map.put("recom", "text");
 		createTable(map);
 	}
 	
@@ -45,7 +46,8 @@ public class PluginsTable extends MySQLStorage {
                     					resultSet.getString("name"),
                     					resultSet.getString("jarname"),
                     					resultSet.getString("version"),
-                    					gson.fromJson(resultSet.getString("depends"), ArrayList.class)));
+                    					gson.fromJson(resultSet.getString("depends"), ArrayList.class),
+                    					resultSet.getString("recom")));
                     }
                     setReturnValue(plugins);
                 } catch (SQLException e) {
@@ -81,7 +83,7 @@ public class PluginsTable extends MySQLStorage {
                 try {
                 	DBPlugin plugin = null;
                     if (resultSet.next()) {
-                    	plugin = new DBPlugin(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("jarname"),resultSet.getString("version"),gson.fromJson(resultSet.getString("depends"), ArrayList.class));
+                    	plugin = new DBPlugin(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("jarname"),resultSet.getString("version"),gson.fromJson(resultSet.getString("depends"), ArrayList.class), resultSet.getString("recom"));
                     }
                     setReturnValue(plugin);
                 } catch (SQLException e) {
@@ -99,7 +101,7 @@ public class PluginsTable extends MySQLStorage {
                 try {
                 	ArrayList<DBPlugin>  plugin = new ArrayList<DBPlugin>();
                     while (resultSet.next()) {
-                    	plugin.add(new DBPlugin(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("jarname"),resultSet.getString("version"),gson.fromJson(resultSet.getString("depends"), ArrayList.class)));
+                    	plugin.add(new DBPlugin(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("jarname"),resultSet.getString("version"),gson.fromJson(resultSet.getString("depends"), ArrayList.class), resultSet.getString("recom")));
                     }
                     setReturnValue(plugin);
                 } catch (SQLException e) {
@@ -109,12 +111,13 @@ public class PluginsTable extends MySQLStorage {
         });
 	}
 	
-	public void insert(String name, String jarName, String version, ArrayList<String> depends) {
-        execute(new Insert(insertIntoTable() + " (name,jarname,version,depends) VALUES (?,?,?,?)",
+	public void insert(String name, String jarName, String version, ArrayList<String> depends, String recom) {
+        execute(new Insert(insertIntoTable() + " (name,jarname,version,depends,recom) VALUES (?,?,?,?,?)",
                 name,
                 jarName,
                 version,
-                gson.toJson(depends)) {
+                gson.toJson(depends),
+                recom) {
             @Override
             public void onInsert(List<Integer> integers) {
             }
