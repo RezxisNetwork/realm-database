@@ -3,8 +3,9 @@ package net.rezxis.mchosting.database.object.server;
 import java.util.ArrayList;
 
 import lombok.Getter;
+import lombok.Setter;
 
-@Getter
+@Getter@Setter
 public class DBPlugin {
 
 	private int id;

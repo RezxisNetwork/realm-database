@@ -10,6 +10,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import net.rezxis.mchosting.database.MySQLStorage;
+import net.rezxis.mchosting.database.object.player.DBPlayer;
 import net.rezxis.mchosting.database.object.server.DBPlugin;
 
 public class PluginsTable extends MySQLStorage {
@@ -93,6 +94,24 @@ public class PluginsTable extends MySQLStorage {
         });
 	}
 	
+	public DBPlugin getPluginByVersion(String name, String version) {
+		return (DBPlugin) executeQuery(new Query(selectFromTable("*", "name = ? AND version = ?"), name, version) {
+            @SuppressWarnings("unchecked")
+			@Override
+            protected void onResult(ResultSet resultSet) {
+                try {
+                	DBPlugin plugin = null;
+                    if (resultSet.next()) {
+                    	plugin = new DBPlugin(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("jarname"),resultSet.getString("version"),gson.fromJson(resultSet.getString("depends"), ArrayList.class), resultSet.getString("recom"));
+                    }
+                    setReturnValue(plugin);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+	}
+	
 	@SuppressWarnings("unchecked")
 	public ArrayList<DBPlugin> get(String name) {
 		return (ArrayList<DBPlugin> ) executeQuery(new Query(selectFromTable("*", "name = ?"), name) {
@@ -122,5 +141,10 @@ public class PluginsTable extends MySQLStorage {
             public void onInsert(List<Integer> integers) {
             }
         });
+    }
+	
+	public void update(DBPlugin plugin) {
+        execute("UPDATE " + getTable() + " SET name = ?, jarname = ?, version = ?, depends = ?, recom = ? WHERE id = ?",
+        		plugin.getName(),plugin.getJarName(),plugin.getVersion(),gson.toJson(plugin.getDepends()),plugin.getRecom(),plugin.getId());
     }
 }
