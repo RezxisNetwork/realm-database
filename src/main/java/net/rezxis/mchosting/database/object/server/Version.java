@@ -2,7 +2,7 @@ package net.rezxis.mchosting.database.object.server;
 
 public enum Version {
 
-	M1_16_3,M1_16_2,M1_16_1,
+	M1_16_4,M1_16_3,M1_16_2,M1_16_1,
 	M1_15_2,M1_15_1,M1_15,
 	M1_14_4,M1_14_3,M1_14_2,M1_14_1,M1_14,
 	M1_13_2,M1_13_1,M1_13,
